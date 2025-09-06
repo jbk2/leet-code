@@ -19,26 +19,38 @@
 # then go all way to end of nexts on last child
 # when at end of nexts go to prev child
 
-def flatten(root)
-  return if root.nil?
+def flatten(head)
+  return if head.nil?
+  dfs(head)
+  head
+end
 
-  head = root
-  curr = root
-  stack = []
+def dfs(node)
+  curr = node
+  last = node
 
   while curr
+    orig_next = curr.next
+
     if curr.child
-      stack << curr.next if curr.next
-      curr.next = curr.child
-      curr.next.prev = curr
+      child_head = curr.child
+      child_tail = dfs(child_head)
+
+      curr.next = child_head
+      child_head.prev = curr
       curr.child = nil
-    elsif curr.next.nil? && !stack.empty?
-      nxt = stack.pop
-      curr.next = nxt
-      curr.next.prev = curr
+
+      if orig_next 
+        child_tail.next = orig_next
+        orig_next.prev = child_tail
+      end
+
+      last = child_tail
+      curr = child_tail
+    else
+      last = curr
     end
     curr = curr.next
   end
-
-  head
+  last
 end
