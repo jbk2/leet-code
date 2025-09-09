@@ -1,4 +1,4 @@
-require_relative'./linked_list'
+require_relative'./linked_list_helper'
 # Definition for singly-linked list.
 # class ListNode
 #     attr_accessor :val, :next
