@@ -26,9 +26,7 @@ require_relative'./linked_list'
 def reverse_list(node)
   return node if node.nil? || node.next.nil?
 
-
   head = reverse_list(node.next)
-  # now at end of list on last node
 
   node.next.next = node
   node.next = nil
