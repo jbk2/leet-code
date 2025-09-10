@@ -1,27 +1,35 @@
 # @param {Integer} num_rows
 # @return {Integer[][]}
 def generate(num_rows)
-  return 1 if num_rows == 1 || 
-  
+  return nil if num_rows.nil?
+  # return 1 if num_rows == 1
+  memo = {}
+
   val = lambda do |r, c|
-    return 1 if r = 0 || c = 0 || r == c
-    val(r - 1, c - 1) + val(r - 1, c) 
+    return 1 if r == 0 || c == 0 || r == c
+
+    memo[[r, c]] ||= val.call(r - 1, c - 1) + val.call(r - 1, c)
   end
 
-  rows, cols = num_rows
-  rows = Array.new(rows, [])
-  row = rows
+  rows = cols = num_rows
+  row_index = 0
+  triangle = []
 
-  while row > 0 do
-    row_arr = Array.new
-    col = 0
+  while row_index < rows do
+    row_arr = []
+    col_index = 0
 
-    while col < cols do
-      row_arr << val.call(row, col)
-      col += 1
+    while col_index <= row_index do
+      row_arr << val.call(row_index, col_index)
+      col_index += 1
     end
-    rows << row_arr
-    row -= 1
+
+    triangle << row_arr
+    row_index += 1
   end
 
+  triangle
 end
+
+one_row = generate(23)
+puts one_row.inspect
