@@ -12,9 +12,11 @@ end
 
 def generate_trees(n)
   return [] if n == 0
+  memo = {}
 
   generate = lambda do |l, r|
     return [nil] if l > r
+    return memo[[l, r]] if memo[[l, r]]
     result = []
 
     (l..r).each do |root|
@@ -29,6 +31,7 @@ def generate_trees(n)
           result << node
         end
       end
+      memo[[l, r]] = result
     end
     result
   end
