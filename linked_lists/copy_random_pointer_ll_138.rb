@@ -13,59 +13,78 @@ end
 # @param {Node} node
 # @return {Node}
 
+# def copy_random_list(head)
+#   return nil if head.nil?
+#   curr = head
+
+#   new_arr = []
+#   orig_node_indexes = {}
+
+#   index = 0
+#   tail = nil
+
+#   while curr
+#     new_node = Node.new(curr.val)
+#     new_arr << new_node
+#     orig_node_indexes[curr] = index
+
+#     tail.next = new_node if tail
+#     tail = new_node
+#     curr = curr.next
+#     index += 1
+#   end
+
+#   curr = head
+#   index = 0
+
+#   while curr
+#     orig_random = curr.random
+#     new_arr[index].random = orig_random ? new_arr[orig_node_indexes[orig_random]] : nil
+#     curr = curr.next
+#     index += 1
+#   end
+
+#   new_arr.first
+# end
+
+# def copy_random_list(head)
+#   map = {}
+#   curr = head
+
+#   while curr
+#     map[curr] = Node.new(curr.val)
+#     curr = curr.next
+#   end
+
+#   curr = head
+
+#   while curr
+#     map[curr].next = map[curr.next]
+#     map[curr].random = map[curr.random]
+#     curr = curr.next
+#   end
+
+#   map[head]
+# end
+
 def copy_random_list(head)
-  return nil if head.nil?
-  curr = head
+  clone_node = lambda do |node, memo|
+    return nil if node.nil?
+    return memo[node] if memo[node]
 
-  new_arr = []
-  orig_node_indexes = {}
+    new_head = Node.new(node.val)
+    memo[node] = new_head
 
-  index = 0
-  tail = nil
+    memo[node.next] = clone_node.call(node.next, memo)
+    memo[node.random] = clone_node.call(node.random, memo)
 
-  while curr
-    new_node = Node.new(curr.val)
-    new_arr << new_node
-    orig_node_indexes[curr] = index
-
-    tail.next = new_node if tail
-    tail = new_node
-    curr = curr.next
-    index += 1
+    new_head
   end
 
-  curr = head
-  index = 0
-  
-  while curr
-    orig_random = curr.random
-    new_arr[index].random = orig_random ? new_arr[orig_node_indexes[orig_random]] : nil
-    curr = curr.next
-    index += 1
-  end
-
-  new_arr.first
+  clone_node.call(head, {})
 end
 
-def copy_random_list(head)
-  map = {}
-  curr = head
 
-  while curr
-    map[curr] = Node.new(curr.val)
-    curr = curr.next
-  end
-
-  curr = head
-
-  while curr
-    map[curr].next = map[curr.next]
-    map[curr].random = map[curr.random]
-    curr = curr.next
-  end
-
-  map[head]
-end
 
 # Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
   first_node = Node.new(7)
