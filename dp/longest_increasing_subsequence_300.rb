@@ -8,21 +8,15 @@ def length_of_lis(nums)
   longest_subs[nums.length - 1] = 1
 
   calc_longest_sub = lambda do |nums, index|
-    return longest_subs[index] if longest_subs[index]
-    return 1 if nums.length == 1
+    return longest_subs[index] if longest_subs.key?(index)
 
     vals = [1]
-    local_index = 1
-    prev = nums[local_index - 1]
+    prev = nums[0]
 
-    (nums.length - 1).times do
+    (1..nums.length - 1).each do |local_index|
       if prev < nums[local_index]
         vals << 1 + longest_subs[index + local_index]
-      else
-        vals << 1
       end
-
-      local_index += 1
     end
 
     vals.max
@@ -31,18 +25,11 @@ def length_of_lis(nums)
   index = nums.length - 1
 
   until index < 0 do
-    longest_subs[index] = calc_longest_sub.call(nums[index..-1], index)
+    longest_subs[index] = calc_longest_sub.call(nums[index..], index)
     index -= 1
   end
 
-  max_vals = []
-
-  longest_subs.keys.each do |key|
-    max_vals << longest_subs[key]
-  end
-
-  # binding.pry
-  max_vals.max
+  longest_subs.values.max
 end
 
 # Example 1:
