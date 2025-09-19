@@ -1,20 +1,37 @@
 # @param {Integer[]} cost
 # @return {Integer}
+
+# Bottom up DP approach 
+# def min_cost_climbing_stairs(cost)
+#   n = cost.length
+  
+#   return 0 if n.zero?
+#   return cost[0] if n == 1
+  
+#   prev2 = cost[0]
+#   prev1 = cost[1]
+  
+#   (2...n).each do |i|
+#     curr = cost[i] + [prev2, prev1].min
+#     prev2, prev1 = prev1, curr
+#   end
+  
+#   [prev2, prev1].min
+# end
+
+# Top down DP approach 
 def min_cost_climbing_stairs(cost)
   n = cost.length
+  memo = []
 
-  return 0 if n.zero?
-  return cost[0] if n == 1
+  f = lambda do |i|
+    return 0 if i < 0
+    return memo[i] unless memo[i].nil?
 
-  prev2 = cost[0]
-  prev1 = cost[1]
-
-  (2...n).each do |i|
-    curr = cost[i] + [prev2, prev1].min
-    prev2, prev1 = prev1, curr
+    memo[i] = cost[i] + [f.call(i - 1), f.call(i - 2) ].min
   end
 
-  [prev2, prev1].min
+  [f.call(n - 1), f.call(n - 2)].min
 end
 
 # Example 1:
