@@ -19,26 +19,32 @@
 #     total
 # end
 
+# top down DP solution
 def maximum_score(nums, multipliers)
   n = nums.length
   m = multipliers.length
   memo = Array.new(m + 1) { Array.new(m + 1) }
 
-  f = lambda do |picks, from_left|
-    return 0 if picks == m
-    return memo[picks][from_left] unless memo[picks][from_left].nil?
+  f = lambda do |total_picks, left_picks|
+    return 0 if total_picks == m
+    return memo[total_picks][left_picks] unless memo[total_picks][left_picks].nil?
 
-    from_right = picks - from_left
-    left_index_edge = from_left
-    right_index_edge = n - 1 - from_right
+    right_picks = total_picks - left_picks
+    left_index = left_picks
+    right_index = n - 1 - right_picks
 
-    memo[picks][from_left] = [
-      nums[left_index_edge] * multipliers[picks] + f.call(picks + 1, from_left + 1),
-      nums[right_index_edge] * multipliers[picks] + f.call(picks + 1, from_left)
+    memo[total_picks][left_picks] = [
+      nums[left_index] * multipliers[total_picks] + f.call(total_picks + 1, left_picks + 1),
+      nums[right_index] * multipliers[total_picks] + f.call(total_picks + 1, left_picks)
     ].max
   end
 
   f.call(0, 0)
+end
+
+# bottom up DP solution
+def maximum_score(nums, multipliers)
+  
 end
 
 # Example 1:
