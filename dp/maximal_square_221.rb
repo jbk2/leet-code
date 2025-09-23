@@ -103,7 +103,7 @@ def maximal_square(matrix)
       memo[row][col] = 0
     end
   end
-  
+
   (1..rows).each do |row|
     (1..cols).each do |col|
       side = largest_side.call(row, col)
