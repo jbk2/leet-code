@@ -10,8 +10,10 @@ def valid_palindrome(string)
   alpha_num = /[a-zA-Z0-9]/
   
   while l_idx < r_idx
-    l_idx += 1 while !string[l_idx].match?(alpha_num)
-    r_idx -= 1 while !string[r_idx].match?(alpha_num)
+    l_idx += 1 while l_idx < string.length && !string[l_idx].match?(alpha_num)
+    r_idx -= 1 while  r_idx >= 0 && !string[r_idx].match?(alpha_num)
+
+    break if l_idx >= r_idx
     
     return false if string[l_idx].downcase != string[r_idx].downcase
      l_idx += 1
