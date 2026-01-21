@@ -35,6 +35,7 @@ target_2 = 6
 result_2 = [1,2]
 test_2 = two_sum(nums_2, target_2)
 puts test_2 == result_2 ? "✅passes, with result = #{test_2}" : "❌fails with result = #{test_2}"
+
 # Example 3:
 nums_3 = [3,3]
 target_3 = 6
