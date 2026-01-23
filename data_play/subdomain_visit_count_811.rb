@@ -5,7 +5,7 @@
 # For example, "9001 discuss.leetcode.com" is a count-paired domain that indicates that discuss.leetcode.com was visited 9001 times.
 # Given an array of count-paired domains cpdomains, return an array of the count-paired domains of each subdomain in the input. You may return the answer in any order.
 
-def count_subdomains(domains)
+def count_subdomains_orig(domains)
   domain_memo = Hash.new(0)
   
   domains.each do |domain|  
@@ -40,11 +40,28 @@ def count_subdomains(domains)
   domain_count_arr
 end
 
+def count_subdomains(domains)
+  domain_memo = Hash.new(0)
+
+  domains.each do |domain|
+    count, sub_domain = domain.split(' ')
+
+    parts = sub_domain.split('.')
+
+    (0...parts.length).each do |i|
+      url = parts[i..].join('.')
+      domain_memo[url] += count.to_i
+    end
+  end
+
+  domain_memo.map{ |k, v| "#{v} #{k}" }
+end
+
 # Example 1:
 domains_1 = ["9001 discuss.leetcode.com"]
 result_1 = ["9001 leetcode.com","9001 discuss.leetcode.com","9001 com"]
 test_1 = count_subdomains(domains_1)
-puts test_1 == result_1 ? "✅passes - subdomain list is #{test_1}" : "❌fails - subdomains returned are - #{test_1}, but should be #{result_1}"
+puts test_1.tally == result_1.tally ? "✅passes - subdomain list is #{test_1}" : "❌fails - subdomains returned are - #{test_1}, but should be #{result_1}"
 # Explanation: We only have one website domain: "discuss.leetcode.com".
 # As discussed above, the subdomain "leetcode.com" and "com" will also be visited. So they will all be visited 9001 times.
 # Example 2:
