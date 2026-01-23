@@ -2,7 +2,13 @@
 # Return the running sum of nums.
 
 def running_sum(nums)
-    
+  sum_arr = []
+  
+  nums.length.times do |i|
+    sum_arr << nums.slice(0, i + 1).sum
+  end
+  
+  sum_arr
 end 
 
 # Example 1:
@@ -13,10 +19,10 @@ test_1 = running_sum(nums_1)
 puts test_1 == result_1 ? "✅passes - sum is - #{test_1}" : "❌fails - sum is - #{test_1}, but shoudl be #{result_1}"
 
 # Example 2:
-nums2 = [1,1,1,1,1]
+nums_2 = [1,1,1,1,1]
 result_2 = [1,2,3,4,5]
 # Explanation: Running sum is obtained as follows: [1, 1+1, 1+1+1, 1+1+1+1, 1+1+1+1+1].
-test_2 = running_sum(nums_1)
+test_2 = running_sum(nums_2)
 puts test_2 == result_2 ? "✅passes - sum is - #{test_2}" : "❌fails - sum is - #{test_2}, but shoudl be #{result_2}"
 
 # Example 3:
