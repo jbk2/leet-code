@@ -17,7 +17,6 @@ def intersection(arr1, arr2)
 end
 
 
-
 # Example 1:
 nums1a = [1,2,2,1]
 nums1b = [2,2]
