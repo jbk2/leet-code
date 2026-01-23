@@ -1,8 +1,22 @@
 # Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must be unique and you may return the result in any order.
 
-def intersection(arr1, arr2)
+def intersection_easy(arr1, arr2)
   arr1.intersection(arr2)
 end
+
+def intersection(arr1, arr2)
+  intersections = []
+  
+  arr1.each do |el1|
+    arr2.each do |el2|
+      intersections << el1 if el1 == el2
+    end
+  end
+
+  intersections.uniq
+end
+
+
 
 # Example 1:
 nums1a = [1,2,2,1]
