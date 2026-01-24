@@ -5,15 +5,24 @@
 
 def selection_sort(nums)
   (nums.length - 1).times do |idx|
-    remainder_arr = nums[idx + 1..-1]
-    remainder_smallest_idx = smallest(remainder_arr)
+    remainder_min_idx = min_index_from(nums, idx)
 
-    if nums[remainder_smallest_idx + idx + 1] < nums[idx]
-      nums[idx], nums[remainder_smallest_idx + idx + 1] = nums[remainder_smallest_idx + idx + 1], nums[idx]
+    if nums[remainder_min_idx] < nums[idx]
+      nums[idx], nums[remainder_min_idx] = nums[remainder_min_idx], nums[idx]
     end 
 
   end
   nums
+end
+
+def min_index_from(nums, start_idx)
+  min_idx = start_idx
+  
+  (start_idx + 1...nums.length).each do |idx|
+    min_idx = idx if nums[min_idx] > nums[idx]
+  end
+  
+  min_idx
 end
 
 def smallest(nums_arr)
