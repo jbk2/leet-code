@@ -5,6 +5,7 @@ def third_max(nums)
   sorted_uniques[-3] || sorted_uniques.max
 end
 
+
 # Example 1:
 nums_1 = [3,2,1]
 result_1 = 1
