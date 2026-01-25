@@ -44,7 +44,6 @@ nums_1 = [2,0,2,1,1,0]
 result_1 = [0,0,1,1,2,2]
 # puts smallest(nums_1)
 output_1 = selection_sort(nums_1)
-# puts output_1.inspect
 puts output_1 == result_1 ? "✅passes - with the correct sorted values; #{output_1}"
   : "❌fails - output is #{output_1}, but shoudl be #{result_1}"
 
