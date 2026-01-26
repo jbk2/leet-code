@@ -1,7 +1,7 @@
 # Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
 # Return the running sum of nums.
 
-def running_sum(nums)
+def running_sum1(nums)
   sum_arr = []
   
   nums.length.times do |i|
@@ -9,26 +9,45 @@ def running_sum(nums)
   end
 
   sum_arr
-end 
+end
+
+def running_sum2(nums)
+  sum = 0
+  nums.map.with_index do |num, idx|
+    if idx == 0
+      sum += num
+      num
+    else
+      sum += num
+      sum
+    end
+  end
+end
+
+def running_sum3(nums)
+  nums.each_with_object([]) do |num, output|
+    output << num + (output[-1] || 0)
+  end
+end
 
 # Example 1:
 nums_1 = [1,2,3,4]
 result_1 = [1,3,6,10]
 # Explanation: Running sum is obtained as follows: [1, 1+2, 1+2+3, 1+2+3+4].
-test_1 = running_sum(nums_1)
+test_1 = running_sum3(nums_1)
 puts test_1 == result_1 ? "✅passes - sum is - #{test_1}" : "❌fails - sum is - #{test_1}, but should be #{result_1}"
 
 # Example 2:
 nums_2 = [1,1,1,1,1]
 result_2 = [1,2,3,4,5]
 # Explanation: Running sum is obtained as follows: [1, 1+1, 1+1+1, 1+1+1+1, 1+1+1+1+1].
-test_2 = running_sum(nums_2)
+test_2 = running_sum3(nums_2)
 puts test_2 == result_2 ? "✅passes - sum is - #{test_2}" : "❌fails - sum is - #{test_2}, but should be #{result_2}"
 
 # Example 3:
 nums_3 = [3,1,2,10,1]
 result_3 = [3,4,6,16,17]
-test_3 = running_sum(nums_3)
+test_3 = running_sum3(nums_3)
 puts test_3 == result_3 ? "✅passes - sum is - #{test_3}" : "❌fails - sum is - #{test_3}, but should be #{result_3}"
  
 # Constraints:
