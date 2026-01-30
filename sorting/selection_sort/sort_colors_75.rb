@@ -39,21 +39,37 @@ def smallest(nums_arr)
   smallest_idx
 end
 
+def selection_sort_pointers(arr)
+  sorted = []
+  
+  arr.each.with_index do |el, idx|
+    smallest_idx = idx + min_index(arr[idx..-1])
+    arr[idx], arr[smallest_idx] = arr[smallest_idx], arr[idx]
+  end
+
+end
+
+def min_index(arr)
+  arr.each_with_index.min_by { |val, idx| val }&.last  
+end
+
 # Example 1:
 nums_1 = [2,0,2,1,1,0]
-result_1 = [0,0,1,1,2,2]
-# puts smallest(nums_1)
-output_1 = selection_sort(nums_1)
-puts output_1 == result_1 ? "✅passes - with the correct sorted values; #{output_1}"
-  : "❌fails - output is #{output_1}, but shoudl be #{result_1}"
+# puts min_index(nums_2)
+puts selection_sort_pointers(nums_1).inspect
+# result_1 = [0,0,1,1,2,2]
+# # puts smallest(nums_1)
+# output_1 = selection_sort(nums_1)
+# puts output_1 == result_1 ? "✅passes - with the correct sorted values; #{output_1}"
+#   : "❌fails - output is #{output_1}, but shoudl be #{result_1}"
 
-# Example 2:
-nums_2 = [2,0,1]
-result_2 = [0,1,2]
-output_2 = selection_sort(nums_2)
-puts output_2 == result_2 ? "✅passes - with the correct sorted values; #{output_2}"
-  : "❌fails - output is #{output_2}, but shoudl be #{result_2}"
-# Constraints:
-# n == nums.length
-# 1 <= n <= 300
-# nums[i] is either 0, 1, or 2.
+# # Example 2:
+# nums_2 = [2,0,1]
+# result_2 = [0,1,2]
+# output_2 = selection_sort(nums_2)
+# puts output_2 == result_2 ? "✅passes - with the correct sorted values; #{output_2}"
+#   : "❌fails - output is #{output_2}, but shoudl be #{result_2}"
+# # Constraints:
+# # n == nums.length
+# # 1 <= n <= 300
+# # nums[i] is either 0, 1, or 2.
