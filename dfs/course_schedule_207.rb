@@ -48,5 +48,11 @@ answer_2 = false
 output_2 = can_finish(num_courses_2, prerequisites_2)
 puts output_2 == answer_2 ? "✅passes - indeed courses #{output_2 ? 'can' : 'cannot'} be taken"
 : "❌fails - courses should #{answer_2 ? 'be' : 'not be'} able to be taken, but your code said they #{output_1 ? 'could' : 'could not'} be taken"
-# Explanation: There are a total of 2 courses to take. 
-# To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+
+# Example 3:
+num_courses_3 = 6
+prerequisites_3 = [[1,0],[1,2],[3,1],[2,3],[2,4],[4,5],[2,5]]
+answer_3 = false
+output_3 = can_finish(num_courses_3, prerequisites_3)
+puts output_3 == answer_3 ? "✅passes - indeed courses #{output_3 ? 'can' : 'cannot'} be taken"
+: "❌fails - courses should #{answer_3 ? 'be' : 'not be'} able to be taken, but your code said they #{output_3 ? 'could' : 'could not'} be taken"
