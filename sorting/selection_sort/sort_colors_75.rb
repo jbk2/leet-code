@@ -53,10 +53,28 @@ def min_index(arr)
   arr.each_with_index.min_by { |val, idx| val }&.last  
 end
 
+def selection_sort_2(input)
+  
+  input.each_with_index do |val, idx|
+    remainder = input[idx..-1]
+    min = remainder.min
+    min_idx = remainder.index(min) + idx
+    
+    if min < val 
+      input[idx], input[min_idx] = input[min_idx], input[idx]
+    end
+  end
+
+  input
+end
+
+
+
 # Example 1:
 nums_1 = [2,0,2,1,1,0]
 # puts min_index(nums_2)
-puts selection_sort_pointers(nums_1).inspect
+puts selection_sort_2(nums_1).inspect
+# puts selection_sort_pointers(nums_1).inspect
 # result_1 = [0,0,1,1,2,2]
 # # puts smallest(nums_1)
 # output_1 = selection_sort(nums_1)
