@@ -48,11 +48,12 @@ def insertion_sort_list(head)
       dummy_prev = dummy_prev.next
     end
 
-    tail = dummy_prev.next
+    dummy_tail = dummy_prev.next
     dummy_prev.next = current
-    dummy_prev.next.next = tail
+    dummy_prev.next.next = dummy_tail
     current = next_current
   end
+
   dummy_head.next
 end
 
@@ -65,11 +66,32 @@ def sll_to_arr(ll)
   arr
 end
 
+def insertion_sort_list_2(head)
+  dummy_head = ListNode.new(-Float::INFINITY)
+  current = head
+
+  while current
+    current_tail = current.next
+    dummy_prev = dummy_head
+
+    while dummy_prev.next && dummy_prev.next.val <= current.val
+      dummy_prev = dummy_prev.next
+    end
+
+    dummy_tail = dummy_prev.next
+    dummy_prev.next = current
+    dummy_prev.next.next = dummy_tail
+    current = current_tail
+  end
+  
+  dummy_head.next
+end
+
 
 # Example 1:
 head_1 = build_linked_list([4,2,1,3])
 result_1 =  sll_to_arr(build_linked_list([1,2,3,4]))
-output_1 = sll_to_arr(insertion_sort_list(head_1))
+output_1 = sll_to_arr(insertion_sort_list_2(head_1))
 puts output_1 == result_1 ? "✅passes - with the correctly sorted output; #{output_1}"
   : "❌fails - output is #{output_1.inspect}, but should be #{result_1.inspect}"
 
@@ -77,6 +99,6 @@ puts output_1 == result_1 ? "✅passes - with the correctly sorted output; #{out
 # Example 2:
 head_2 = build_linked_list([-1,5,3,4,0])
 result_2 = sll_to_arr(build_linked_list([-1,0,3,4,5]))
-output_2 = sll_to_arr(insertion_sort_list(head_2))
+output_2 = sll_to_arr(insertion_sort_list_2(head_2))
 puts output_2 == result_2 ? "✅passes - with the correctly sorted output; #{output_2}"
   : "❌fails - output is #{output_2}, but should be #{result_2}"
