@@ -5,7 +5,7 @@
 
 def height_checker(heights)
   orig_heights = heights.dup
-  sorted = bubble_sort(heights)  
+  sorted = bubble_sort_2(heights)  
   malorder_count = 0
 
   orig_heights.length.times do |idx|
@@ -36,11 +36,34 @@ def bubble_sort(arr)
   end
   arr
 end
+
+def bubble_sort_2(input)
+  
+  input.length.times do |n|
+    all_sorted = true
+
+    (0...(input.length - 1 - n)).each do |left_idx|
+      left_val = input[left_idx]
+      neighbour_idx = left_idx + 1
+      neighbour_val = input[neighbour_idx]
+      
+      if left_val > neighbour_val
+        all_sorted = false
+        input[left_idx], input[neighbour_idx] = input[neighbour_idx], input[left_idx]
+      end
+    end
+    
+    break if all_sorted
+  end
+  input
+end
+  
  
 
 # Example 1:
 heights_1 = [1,1,4,2,1,3]
 result_1 = 3
+# puts bubble_sort_2(heights_1).inspect
 output_1 = height_checker(heights_1)
 puts output_1 == result_1 ? "✅passes - there are #{output_1} out of order values"
   : "❌fails - result is #{output_1}, but there are actually #{result_1} out of order values"
