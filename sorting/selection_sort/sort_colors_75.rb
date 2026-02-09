@@ -3,6 +3,11 @@
 # We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
 # You must solve this problem without using the library's sort function.
 
+# Constraints:
+# n == nums.length
+# 1 <= n <= 300
+# nums[i] is either 0, 1, or 2.
+
 def selection_sort(nums)
   (nums.length - 1).times do |idx|
     remainder_min_idx = min_index_from(nums, idx)
@@ -50,11 +55,10 @@ def selection_sort_pointers(arr)
 end
 
 def min_index(arr)
-  arr.each_with_index.min_by { |val, idx| val }&.last  
+  arr.each_with_index.min_by { |val, idx| val }&.last
 end
 
 def selection_sort_2(input)
-  
   input.each_with_index do |val, idx|
     remainder = input[idx..-1]
     min = remainder.min
@@ -73,21 +77,16 @@ end
 # Example 1:
 nums_1 = [2,0,2,1,1,0]
 # puts min_index(nums_2)
-puts selection_sort_2(nums_1).inspect
+# puts selection_sort_2(nums_1).inspect
 # puts selection_sort_pointers(nums_1).inspect
-# result_1 = [0,0,1,1,2,2]
-# # puts smallest(nums_1)
-# output_1 = selection_sort(nums_1)
-# puts output_1 == result_1 ? "✅passes - with the correct sorted values; #{output_1}"
-#   : "❌fails - output is #{output_1}, but shoudl be #{result_1}"
+answer_1 = [0,0,1,1,2,2]
+output_1 = selection_sort_2(nums_1)
+puts output_1 == answer_1 ? "✅passes - with the correct sorted values; #{output_1}"
+  : "❌fails - output is #{output_1}, but shoudl be #{answer_1}"
 
 # # Example 2:
-# nums_2 = [2,0,1]
-# result_2 = [0,1,2]
-# output_2 = selection_sort(nums_2)
-# puts output_2 == result_2 ? "✅passes - with the correct sorted values; #{output_2}"
-#   : "❌fails - output is #{output_2}, but shoudl be #{result_2}"
-# # Constraints:
-# # n == nums.length
-# # 1 <= n <= 300
-# # nums[i] is either 0, 1, or 2.
+nums_2 = [2,0,1]
+answer_2 = [0,1,2]
+output_2 = selection_sort_2(nums_2)
+puts output_2 == answer_2 ? "✅passes - with the correct sorted values; #{output_2}"
+  : "❌fails - output is #{output_2}, but shoudl be #{answer_2}"
