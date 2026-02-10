@@ -19,7 +19,7 @@ class MaxHeap
 
   def insert
     # add to end of heap_arr, calc parent
-    # if larger than parent then swap (sift up or sift down)- repeat until in order
+    # # if larger than parent then swap (sift up or sift down)- repeat until in order
   end
 
   def sift_up(i)
@@ -103,40 +103,14 @@ class MaxHeap
   end
 end
 
-def heap_sort(arr)
-  heap = MaxHeap.new(arr)
-  sorted_arr = []
-  
-  heap.heap.length.times do 
-    sorted_arr << heap.remove_max
-    # binding.irb
-  end
-
-  
-  sorted_arr
-end
-
-
-
-# ============================== LeetCode problem "Sort an Array" ====== (included in the Sorting chapter)
-# Given an array of integers nums, sort the array in ascending order and return it.
-# You must solve the problem without using any built-in functions in O(nlog(n)) time complexity and with the smallest space complexity possible.
-# Constraints:
-# 1 <= nums.length <= 5 * 104
-# -5 * 104 <= nums[i] <= 5 * 104
-
-# Example 1:
-nums_1 = [5,2,3,1]
-answer_1 = [1,2,3,5]
-output_1 = heap_sort(nums_1)
-# Explanation: After sorting the array, the positions of some numbers are not changed (for example, 2 and 3), while the positions of other numbers are changed (for example, 1 and 5).
-puts output_1 == answer_1 ? "✅passes - with the correctly sorted output; #{output_1}"
-  : "❌fails - output is #{output_1.inspect}, but should be #{answer_1.inspect}"
-
-# Example 2:
-nums_2 = [5,1,1,2,0,0]
-answer_2 =  [0,0,1,1,2,5]
-# output_2 = heap_sort(nums_2)
-# Explanation: Note that the values of nums are not necessarily unique.
-# puts output_2 == answer_2 ? "✅passes - with the correctly sorted output; #{output_2}"
-#   : "❌fails - output is #{output_2.inspect}, but should be #{answer_2.inspect}"
+# =============================== MANUAL TESTS ==========================
+# ex_unsorted = %w(1 6 2 9 24 12 6 15 18 26).map(&:to_i)
+# puts "before; #{ex_unsorted.inspect}"
+# puts "after; #{mh.heap.inspect}"
+# MaxHeap.is_max_heap?(ex_unsorted)
+# heap_1 = MaxHeap.new(ex_unsorted)
+# MaxHeap.is_max_heap?(heap_1.heap)
+# puts heap_1.heap.inspect
+# max = heap_1.remove_max
+# puts "here's the max; #{max}, & the newly adjusted heap #{heap_1.heap}"
+# MaxHeap.is_max_heap?(heap_1.heap)
