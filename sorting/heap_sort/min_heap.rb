@@ -11,7 +11,9 @@ class MinHeap
     last_idx = n - 1
 
     last_parent_idx = (last_idx - 1) / 2
-    last_parent_idx.downto(0) { |i| sift_down(i) }
+    last_parent_idx.downto(0) do
+      |i| sift_down(i)
+    end
   end
 
   def sift_up(i)
