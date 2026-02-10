@@ -26,7 +26,7 @@ class MaxHeap
     n = @heap.length
 
     loop do
-      l, r = left_index(i), right_index(i)
+      l, r = l_idx(i), r_idx(i)
       break if l >= n
 
       child = r < n && @heap[l] < @heap[r] ? r : l
@@ -42,14 +42,36 @@ class MaxHeap
     (i - 1) / 2
   end
 
-  def left_index(i)
+  def l_idx(i)
     2 * i + 1
   end
 
-  def right_index(i)
+  def r_idx(i)
     2 * i + 2
   end
 
+  def self.is_max_heap?(heap_arr)
+    last_idx = heap_arr.length - 1
+    last_parent_idx = (last_idx - 1) / 2
+  
+    (0..last_parent_idx).each do |i|
+      l, r = (2 * i) + 1, (2 * 1) + 2
+  
+      if heap_arr[r]
+        if heap_arr[i] >= heap_arr[l] && heap_arr[i] >= heap_arr[r]
+          puts "✅ index; #{i} does adhere to max heap propery,\n it's value #{heap_arr[i]} is greater than its left child #{heap_arr[l]} and its right child #{heap_arr[r]}"
+        else
+          puts "❌index; #{i} does NOT adhere to max heap property,\n it's value #{heap_arr[i]} is smaller one of its children, left; #{heap_arr[l]}, right; #{heap_arr[r]}"
+        end
+      elsif heap_arr[l]
+        if heap_arr[i] >= heap_arr[l]
+          puts "✅ index; #{i} does adhere to max heap propery,\n it's value #{heap_arr[i]} is greater than its only child (left); #{heap_arr[l]}"
+        else
+          puts "❌ index; #{i} does NOT adhere to max heap property,\n it's value #{heap_arr[i]} is smaller its only child (left) #{heap_arr[l]}"
+        end
+      end
+    end
+  end
   
   private
   def max_heapify
@@ -65,6 +87,14 @@ class MaxHeap
 end
 
 
+ex_unsorted = %w(1 6 2 9 24 12 6 15 18 26).map(&:to_i)
+# puts "before; #{ex_unsorted.inspect}"
+# puts "after; #{mh.heap.inspect}"
+MaxHeap.is_max_heap?(ex_unsorted)
+heap_1 = MaxHeap.new(ex_unsorted)
+MaxHeap.is_max_heap?(heap_1.heap)
+
+
 
 # Sort an Array Leet # 
 # Given an array of integers nums, sort the array in ascending order and return it.
@@ -74,10 +104,6 @@ end
 nums_1 = [5,2,3,1]
 output_1 = [1,2,3,5]
 # Explanation: After sorting the array, the positions of some numbers are not changed (for example, 2 and 3), while the positions of other numbers are changed (for example, 1 and 5).
-ex_unsorted = %w(1 6 2 9 24 12 6 15 18 26).map(&:to_i)
-puts "before; #{ex_unsorted.inspect}"
-mh = MaxHeap.new(ex_unsorted)
-puts "after; #{mh.heap.inspect}"
 
 
 # Example 2:
