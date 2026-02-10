@@ -39,7 +39,7 @@ class MaxHeap
       l, r = l_idx(i), r_idx(i)
       break if l >= n
 
-      child = r < n && @heap[l] < @heap[r] ? r : l
+      child = (r < n && @heap[l] < @heap[r]) ? r : l
 
       break if @heap[i] >= @heap[child]
 

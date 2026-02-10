@@ -11,9 +11,7 @@ class MinHeap
     last_idx = n - 1
 
     last_parent_idx = (last_idx - 1) / 2
-    (0..last_parent_idx).each do |i|
-      sift_down(i)
-    end
+    last_parent_idx.downto(0) { |i| sift_down(i) }
   end
 
   def sift_up(i)
@@ -26,20 +24,26 @@ class MinHeap
   end
 
   def sift_down(i)
-    l, r = (2 * i) + 1, (2* i) + 2
-    
+    n = @heap.length
+
     loop do
-      child = l
-      if @heap[r] && @heap[r] > @heap[l]
-        child = r
-      end
+      l, r = (2 * i) + 1, (2* i) + 2
+      break if l >= n
+
+      child = (r < n && @heap[r] < @heap[l]) ? r : l
 
       break if @heap[child] > @heap[i]
       
       @heap[child], @heap[i] = @heap[i], @heap[child]
       i = child      
     end
+  end
 
+  def remove_min
+    @heap[0], @heap[-1] = @heap[-1], @heap[0]
+    min = @heap.pop
+    sift_down(0)
+    return min
   end
 
   def is_min_heap?
@@ -75,13 +79,13 @@ class MinHeap
 end
 
 # =============================== MANUAL TESTS ==========================
-ex_unsorted = %w(1 6 2 9 24 12 6 15 18 26).map(&:to_i)
+# ex_unsorted = %w(1 6 2 9 24 12 6 15 18 26).map(&:to_i)
 # puts "before; #{ex_unsorted.inspect}"
 # puts "after; #{mh.heap.inspect}"
 # MinHeap.is_min_heap?(ex_unsorted)
-heap_1 = MinHeap.new(ex_unsorted)
-heap_1.is_min_heap?
-puts heap_1.heap.inspect
+# heap_1 = MinHeap.new(ex_unsorted)
+# heap_1.is_min_heap?
+# puts heap_1.heap.inspect
 # max = heap_1.remove_max
 # puts "here's the max; #{max}, & the newly adjusted heap #{heap_1.heap}"
 # MaxHeap.is_max_heap?(heap_1.heap)
