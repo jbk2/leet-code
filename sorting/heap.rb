@@ -16,9 +16,13 @@ class MaxHeap
     # if larger than parent then swap (sift up or sift down)- repeat until in order
   end
 
-  def sift_up(index)
-    if @heap_arr[index] > parent
-      @heap_arr[index], @heap_arr[parent_index(index)] = @heap_arr[parent_index(index)], @heap_arr[index]
+  def sift_up(i)
+    while i > 0
+      p = (i - 1) / 2
+      break if @heap[p] >= @heap[i]
+      
+      @heap[i], @heap[p] = @heap[p], @heap[i]
+      i = p
     end
   end
 
@@ -38,7 +42,7 @@ class MaxHeap
     end
   end
 
-  def parent_index(i)
+  def p_idx(i)
     (i - 1) / 2
   end
 
@@ -93,6 +97,7 @@ ex_unsorted = %w(1 6 2 9 24 12 6 15 18 26).map(&:to_i)
 MaxHeap.is_max_heap?(ex_unsorted)
 heap_1 = MaxHeap.new(ex_unsorted)
 MaxHeap.is_max_heap?(heap_1.heap)
+puts heap_1.heap.inspect
 
 
 
