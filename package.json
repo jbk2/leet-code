@@ -1,0 +1,23 @@
+{
+  "name": "leetcodeplay",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/jbk2/leet-code#readme",
+  "bugs": {
+    "url": "https://github.com/jbk2/leet-code/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbk2/leet-code.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": { "test": "vitest" }
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}

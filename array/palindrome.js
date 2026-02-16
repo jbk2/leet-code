@@ -29,13 +29,4 @@ function isPalindrome(array) {
   return palindromes;
 }
 
-// Test Examples:
-// Example 1:
-const usernames_1 = ["Tricer66", "TREXerT", "Veloc1COLEv", "stego95"]
-const result_1 = ["TREXerT", "Veloc1COLEv"]
-
-// Example 2:
-const usernames_2 = ["saurus111", "BRACHI33"]
-const result_2 = []
-
-console.log(isPalindrome(usernames_1))
+export { isPalindrome }
