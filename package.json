@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": { "test": "vitest" }
+    "test": "vitest"
   },
   "devDependencies": {
     "vitest": "^3.2.4"
