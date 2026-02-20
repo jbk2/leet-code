@@ -8,7 +8,7 @@
 def top_k_freq_els(array, k)
   map = Hash.new(0)
   top_vals = {}
-  lowest = { val: Float::INFINITY, key: 'start' }
+  lowest = { val: Float::INFINITY, key: nil }
   
   array.each do |num|
     map[num] += 1
@@ -22,18 +22,16 @@ def top_k_freq_els(array, k)
         lowest[:val] = val
         lowest[:key] = key
       end 
-
     elsif val > lowest[:val]
-      # remove lowest and add this one
       top_vals.delete(lowest[:key])
-      lowest[:val] = val
-      lowest[:key] = key
-      top_vals[key] = val    
+      top_vals[key] = val
+      lowest_key, lowest_val = top_vals.min_by{ |_, v| v }
+      lowest[:val] = lowest_val
+      lowest[:key] = lowest_key
     end
   end
 
   return top_vals.keys
-
 end
 
 # Example 1:
