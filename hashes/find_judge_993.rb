@@ -16,15 +16,21 @@
 # 1 <= ai, bi <= n
 
 def judge_idx(n, trusts)
-  trust_map = Hash.new(0)
+  trusters = Hash.new(0)
+  trusted = Hash.new(0)
    
   trusts.each do |trust|
-    trust_map[trust[0]] = trust[1]
+    trusters[trust[0]] += 1 # judge should not be a key in here, shoudl also be n-1 long
+    trusted[trust[1]] += 1 #judge must have a count of n - 1 in here
   end
 
-  people = (1..n).to_a
-  trusting = trust_map.keys
-  judge = people.difference(trusting)[0]
+  all_people = (1..n).to_a
+  non_trusters = all_people.difference(trusters.keys)
+  non_truster = all_people.difference(trusters.keys)[0]
+
+  return -1 if non_trusters.length != 1
+  
+  judge = non_truster if trusted[non_truster] == n - 1
   
   judge || -1
 end
@@ -51,3 +57,9 @@ answer_3 = -1
 output_3 = judge_idx(n_3, trust_3)
 puts output_3 == answer_3 ? "✅passes - yes judge is at index #{output_3}" : "❌fails - judge is at index #{answer_3} not at index #{output_3}"
 
+# Example 4:
+n_4 = 3
+trust_4 = [[1,2],[2,3]]
+answer_4 =  -1
+output_4 = judge_idx(n_4, trust_4)
+puts output_4 == answer_4 ? "✅passes - yes judge is at index #{output_4}" : "❌fails - judge is at index #{answer_4} not at index #{output_4}"
