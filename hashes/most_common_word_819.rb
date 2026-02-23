@@ -13,7 +13,7 @@
 def most_common_word(paragraph, banned)
   word_map = Hash.new(0)
   
-  paragraph.split(' ').each do |word|
+  paragraph.split(/[[:space:]!?',;.]+/).each do |word|
     # normd_word = word.downcase.delete("!?',;.")
     normd_word = word.downcase.gsub(/[!?',;.]/, '')
 
