@@ -64,7 +64,8 @@ def merge_accounts(accts)
     next if visited_indexes[index]
     
     index_cluster = []
-    account = {name: accts[index][0], emails: [] }
+    name = accts[index][0]
+    emails = Set.new()
     
     dfs = lambda do |i|
       return if visited_indexes[i]
@@ -81,13 +82,13 @@ def merge_accounts(accts)
     end
     
     add_emails = lambda do |i|
-      accts[i][1..].each { |email| account[:emails] << email }
+      accts[i][1..].each { |email| emails.add(email) }
       visited_indexes[i] = true
     end
 
     index_cluster.uniq.each { |i| add_emails.call(i) }
     visited_indexes[index] = true
-    merged << [account[:name]] + account[:emails].uniq.sort
+    merged << [name] + emails.to_a.sort
   end
 
   merged
