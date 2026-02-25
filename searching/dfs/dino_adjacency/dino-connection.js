@@ -30,17 +30,22 @@ export function areTheyConnected(dinos, adjList) {
   if (startDino == endDino) return true;
   
   const visited = new Set([startDino]);
-  const stack = new Stack;
-  stack.push(startDino)
+  // const stack = new Stack;
+  const queue = new Queue;
+  // stack.push(startDino)
+  queue.enqueue(startDino)
 
-  while (!stack.isEmpty()) {
-    const neighbours = adjList[stack.pop()]
+  // while (!stack.isEmpty()) {
+  while (!queue.isEmpty()) {
+    // const neighbours = adjList[stack.dequeue()]
+    const neighbours = adjList[queue.dequeue()]
 
     for (const neighbour of neighbours) {
       if (neighbour == endDino) return true;
       if (visited.has(neighbour)) continue;
       visited.add(neighbour)
-      stack.push(neighbour)
+      // stack.push(neighbour)
+      queue.enqueue(neighbour)
     }
   }
   
