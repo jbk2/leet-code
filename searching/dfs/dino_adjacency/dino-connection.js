@@ -29,30 +29,20 @@ export function areTheyConnected(dinos, adjList) {
   const endDino = dinos[1];
   if (startDino == endDino) return true;
   
-  const queue = new Queue();
   const visited = new Set([startDino])
-  // fn to recurse through list add all to queue
-  const populateQueue = ((neighbours) => {
+  const dfs = ((neighbours) => {
     for (const neighbour of neighbours) {
       if (neighbour === endDino) return true;
       if (visited.has(neighbour)) continue;
       
       visited.add(neighbour);
-      queue.enqueue(neighbour);
       
-      if (populateQueue(adjList[neighbour])) return true;
+      if (dfs(adjList[neighbour])) return true;
     }
     return false;
   });
   
-  // call recurse list fn with first dino's connections
-  if (populateQueue(adjList[startDino])) return true;
-
-  // iterate through queue, check if any equal end dino index
-  while (!queue.isEmpty) {
-    let current = queue.dequeue();
-    if (current == endDino) return true;
-  };
+  if (dfs(adjList[startDino])) return true;
 
   return false;
 }
