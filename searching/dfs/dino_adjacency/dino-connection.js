@@ -29,20 +29,35 @@ export function areTheyConnected(dinos, adjList) {
   const endDino = dinos[1];
   if (startDino == endDino) return true;
   
-  const visited = new Set([startDino])
-  const dfs = ((neighbours) => {
+  const visited = new Set([startDino]);
+  const stack = new Stack;
+  stack.push(startDino)
+
+  while (!stack.isEmpty()) {
+    const neighbours = adjList[stack.pop()]
+
     for (const neighbour of neighbours) {
-      if (neighbour === endDino) return true;
+      if (neighbour == endDino) return true;
       if (visited.has(neighbour)) continue;
-      
-      visited.add(neighbour);
-      
-      if (dfs(adjList[neighbour])) return true;
+      visited.add(neighbour)
+      stack.push(neighbour)
     }
-    return false;
-  });
+  }
   
-  if (dfs(adjList[startDino])) return true;
+  // const dfs = ((neighbours) => {
+  //   for (const neighbour of neighbours) {
+  //     if (neighbour === endDino) return true;
+  //     if (visited.has(neighbour)) continue;
+      
+  //     visited.add(neighbour);
+      
+  //     if (dfs(adjList[neighbour])) return true;
+  //   }
+  //   return false;
+  // });
+
+  
+  // if (dfs(adjList[startDino])) return true;
 
   return false;
 }
