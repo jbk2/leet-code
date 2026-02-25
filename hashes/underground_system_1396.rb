@@ -27,67 +27,88 @@
 # There will be at most 2 * 104 calls in total to checkIn, checkOut, and getAverageTime.
 # Answers within 10-5 of the actual value will be accepted.
 class Journey
-  attr_reader :check_in_station, :check_in_time, :user_id, :duration,  :complete
-  attr_accessor :check_out_station, :check_out_time
+  attr_reader :check_in_station, :check_in_time, :user_id, :duration, :complete, :check_out_station, :check_out_time
 
-  def initialize(check_in_station, check_in_time, user_id)
+  def initialize(user_id, check_in_station, check_in_time)
+    @user_id = user_id
     @check_in_station = check_in_station
     @check_in_time = check_in_time
-    @user_id = user_id
     @check_out_station = nil
     @check_out_time = nil
     @duration = nil
     @complete = false
   end
 
-  def set_check_out(station, time)
+  def complete(station, time)
     @check_out_station = station
     @check_out_time = time
-    set_duration(time)
-    mark_complete
-  end
-
-  def set_duration(time)
     @duration = time - check_in_time
-  end
-
-  def mark_complete
     @complete = true
   end
 end
 
-
 class UndergroundSystem
-
   def initialize
-    @incomplete_journeys = { user_id: Journey } # hashes with user id as key and Journey instances as value
+    @incomplete_journeys = {} # hashes with user id as key and Journey instances as value
     @completed_journeys = {} # hashes elements like; {'check_in_station_name'-'check_out_station_name':  Journey }
-    @journey_times = {}  # {'check_in_station_name'-'check_out_station_name': [total_time, journey count] }
+    @journey_times = Hash.new {|h, k| h[k] = [0, 0]}  # {'check_in_station_name'-'check_out_station_name': [total_time, journey count] }
   end
 
   def check_in(user_id, stationName, time)
-    
+    journey = Journey.new(user_id, stationName, time)
+    @incomplete_journeys[user_id] = journey
   end
 
   def check_out(user_id, stationName, time)
-    # find and remove the users journey from @incomplete_journeys
-    # call #set_check_out on the Journey
-    # save journey as value to a hash element with key of 'check_in_station_name'-'check_out_station_name': Journey in @completed_journeys
-    # update @journey times element with duration and another journey count
+    journey = @incomplete_journeys.delete(user_id)
+    journey.complete(stationName, time)
+    journey_key = "#{journey.check_in_station}-#{journey.check_out_station}"
+    @completed_journeys[journey_key] = journey
+    @journey_times[journey_key][0] += journey.duration
+    @journey_times[journey_key][1] += 1
   end
    
-  def getAverageTime(start_station, end_station)
-    ## look up all completed Journeys under start and end key, and return the average of their durations
-    # look up @journey_times for start and end station and divide total time by journey count
+  def get_average_time(start_station, end_station)
+    journey_key = "#{start_station}-#{end_station}"
+    total_time = @journey_times[journey_key][0]
+    journey_count = @journey_times[journey_key][1]
+
+    average = total_time.to_f / journey_count
+    average.round(5)
   end
+
+  def populate_system(event_types, event_data)
+    output = []
+    
+    event_types.each_with_index do |event_type, i|
+      
+      case event_type
+      when "UndergroundSystem"
+        output << nil
+      when "checkIn"
+        check_in(*event_data[i])
+        output << nil
+      when "checkOut"
+        check_out(*event_data[i])
+        output << nil
+      when "getAverageTime"
+        output << get_average_time(*event_data[i])
+      end
+
+    end
+    output
+  end
+
 end
+
 
 
 # Example 1:
 event_types_1 = ["UndergroundSystem","checkIn","checkIn","checkIn","checkOut","checkOut","checkOut","getAverageTime","getAverageTime","checkIn","getAverageTime","checkOut","getAverageTime"]
 events_1 = [[],[45,"Leyton",3],[32,"Paradise",8],[27,"Leyton",10],[45,"Waterloo",15],[27,"Waterloo",20],[32,"Cambridge",22],["Paradise","Cambridge"],["Leyton","Waterloo"],[10,"Leyton",24],["Leyton","Waterloo"],[10,"Waterloo",38],["Leyton","Waterloo"]]
-answer_1 = [null,null,null,null,null,null,null,14.00000,11.00000,null,11.00000,null,12.00000]
-output_1 = log_events(event_types_1, events_1)
+answer_1 = [nil,nil,nil,nil,nil,nil,nil,14.00000,11.00000,nil,11.00000,nil,12.00000]
+tube_1 = UndergroundSystem.new
+output_1 = tube_1.populate_system(event_types_1, events_1)
 puts output_1 == answer_1 ? "✅ class build correctly" :
 "❌ class built incorrectly, should output=> #{answer_1}, instead it outputs=> #{output_1}"
 
@@ -109,10 +130,11 @@ puts output_1 == answer_1 ? "✅ class build correctly" :
 # Example 2:
 event_types_2 = ["UndergroundSystem","checkIn","checkOut","getAverageTime","checkIn","checkOut","getAverageTime","checkIn","checkOut","getAverageTime"]
 events_2 = [[],[10,"Leyton",3],[10,"Paradise",8],["Leyton","Paradise"],[5,"Leyton",10],[5,"Paradise",16],["Leyton","Paradise"],[2,"Leyton",21],[2,"Paradise",30],["Leyton","Paradise"]]
-answer_2 = [null,null,null,5.00000,null,null,5.50000,null,null,6.66667]
-output_1 = log_events(event_types_2, events_2)
+answer_2 = [nil,nil,nil,5.00000,nil,nil,5.50000,nil,nil,6.66667]
+tube_2= UndergroundSystem.new
+output_2 = tube_2.populate_system(event_types_2, events_2)
 puts output_2 == answer_2 ? "✅ class build correctly" :
-  "❌ class built incorrectly, should output=> #{answer_2}, instead it outputs=> #{output_2}"
+"❌ class built incorrectly, should output=> #{answer_2}, instead it outputs=> #{output_2}"
 # Explanation
 # UndergroundSystem undergroundSystem = new UndergroundSystem();
 # undergroundSystem.checkIn(10, "Leyton", 3);
