@@ -1,4 +1,4 @@
-import areTheyConnected from './dino-connection';
+import { areTheyConnected } from './dino-connection';
 import { describe, test, expect } from 'vitest';
 
 describe('areTheyConnected function', () => {
