@@ -27,15 +27,33 @@ class TimeMap
     val_arr = @map[key]
     return nil if val_arr.empty?
 
-    upper_bound = lambda do |time, arr, lo = 0, hi = arr.length|
-      return lo if lo >= hi
-      mid = (lo + hi) / 2
+    # recursive approach
+    # upper_bound = lambda do |time, arr, lo = 0, hi = arr.length|
+    #   return lo if lo >= hi
+    #   mid = (lo + hi) / 2
 
-      if arr[mid][0] <= time
-        upper_bound.call(time, arr, mid + 1, hi)
-      else 
-        upper_bound.call(time, arr, lo, mid)
+    #   if arr[mid][0] <= time
+    #     upper_bound.call(time, arr, mid + 1, hi)
+    #   else 
+    #     upper_bound.call(time, arr, lo, mid)
+    #   end
+    # end
+
+    # iterative aproach
+    upper_bound = lambda do |time, arr|
+      lo = 0
+      hi = arr.length
+    
+      while lo < hi
+        mid = (lo + hi) / 2
+        if arr[mid][0] <= time
+          lo = mid + 1
+        else
+          hi = mid
+        end
       end
+      
+      lo
     end
 
     above = upper_bound.call(time, val_arr)
@@ -43,6 +61,8 @@ class TimeMap
     return nil if above == 0
     return val_arr[above - 1][1]
   end
+
+  
 
   def populate_map(functions, data)
     output = []
