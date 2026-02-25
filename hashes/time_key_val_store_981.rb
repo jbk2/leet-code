@@ -25,7 +25,7 @@ class TimeMap
 
   def get(key, time)
     val_arr = @map[key]
-    return nil if val_arr.empty?
+    return "" if val_arr.empty?
 
     # recursive approach
     # upper_bound = lambda do |time, arr, lo = 0, hi = arr.length|
@@ -58,7 +58,7 @@ class TimeMap
 
     above = upper_bound.call(time, val_arr)
     
-    return nil if above == 0
+    return "" if above == 0
     return val_arr[above - 1][1]
   end
 
