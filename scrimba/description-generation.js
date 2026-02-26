@@ -33,10 +33,13 @@ import data from './scrimba-podcast-data.json' with { type: "json" };
 
 function createDescriptionsFor(data){
   return data.map((podcast) => {
-    const description = `${podcast.title} is a ${podcast.duration} minute ${podcast.genre} podcast hosted by ${podcast.hosts[0]}.`
-    podcast['description'] = description
-    return podcast
-  })
+    const { title, duration, genre, hosts } = podcast; 
+    const description = `${title} is a ${duration} minute ${genre} podcast hosted by ${hosts[0]}.`;
+    return {
+      ...podcast,
+      description
+    }
+  });
 }
 
 console.log(createDescriptionsFor(data))
