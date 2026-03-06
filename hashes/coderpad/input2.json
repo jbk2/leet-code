@@ -1,0 +1,38 @@
+{
+  "posts": [
+    { "id": 101, "author": "alice", "title": "Intro", "comments": [
+      { "id": 1, "author": "bob", "body": "Nice!" },
+      { "id": 2, "author": "carol", "body": "Welcome" }
+    ]},
+    { "id": 102, "author": "bob", "title": "Ruby tips", "comments": [] },
+    { "id": 103, "author": "carol", "title": "Hashes", "comments": [
+      { "id": 3, "author": "alice", "body": "Good one" },
+      { "id": 4, "author": "bob", "body": "Agree" },
+      { "id": 5, "author": "dave", "body": "More please" }
+    ]},
+    { "id": 104, "author": "alice", "title": "Enumerable", "comments": [
+      { "id": 6, "author": "bob", "body": "A+" },
+      { "id": 7, "author": "carol", "body": "Helpful" },
+      { "id": 8, "author": "dave", "body": "Clear" },
+      { "id": 9, "author": "erin", "body": "Thanks" },
+      { "id": 10, "author": "frank", "body": "Solid" },
+      { "id": 11, "author": "gina", "body": "Bookmarked" }
+    ]},
+    { "id": 105, "author": "carol", "title": "APIs", "comments": [
+      { "id": 12, "author": "alice", "body": "Nice" }
+    ]},
+    { "id": 106, "author": "bob", "title": "Testing", "comments": [
+      { "id": 13, "author": "carol", "body": "Good" },
+      { "id": 14, "author": "dave", "body": "Yep" },
+      { "id": 15, "author": "erin", "body": "Useful" },
+      { "id": 16, "author": "alice", "body": "Thanks" }
+    ]},
+    { "id": 107, "author": "carol", "title": "CSS", "comments": [
+      { "id": 17, "author": "bob", "body": "Cool" },
+      { "id": 18, "author": "alice", "body": "Nice" }
+    ]},
+    { "id": 108, "author": "alice", "title": "Wrap-up", "comments": [
+      { "id": 19, "author": "carol", "body": "Great" }
+    ]}
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Getting Started with Ruby",
+      "author": "Alice",
+      "comments": [
+        { "user": "Charlie", "content": "Great post!" },
+        { "user": "Diana", "content": "Thanks for sharing this!" },
+        { "user": "Charlie", "content": "Very helpful" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Ruby Best Practices",
+      "author": "Bob",
+      "comments": [
+        { "user": "Charlie", "content": "Agreed on all points" },
+        { "user": "Eve", "content": "This changed how I write code" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Advanced Ruby Techniques",
+      "author": "Alice",
+      "comments": [
+        { "user": "Diana", "content": "Mind blown!" },
+        { "user": "Eve", "content": "Will try this tomorrow" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Ruby on Rails Guide",
+      "author": "Alice",
+      "comments": []
+    },
+    {
+      "id": 5,
+      "title": "Testing in Ruby",
+      "author": "Bob",
+      "comments": [
+        { "user": "Charlie", "content": "RSpec is amazing" },
+        { "user": "Diana", "content": "Great examples" },
+        { "user": "Frank", "content": "Exactly what I needed" },
+        { "user": "Charlie", "content": "Bookmarked for later" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Ruby Metaprogramming",
+      "author": "Carol",
+      "comments": [
+        { "user": "Eve", "content": "This is wild" },
+        { "user": "Frank", "content": "A bit confusing but interesting" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Ruby Performance Tips",
+      "author": "Alice",
+      "comments": [
+        { "user": "Diana", "content": "Sped up my app by 50%!" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Understanding Blocks and Procs",
+      "author": "Bob",
+      "comments": [
+        { "user": "Charlie", "content": "Finally understand the difference" },
+        { "user": "Eve", "content": "Clear explanations" },
+        { "user": "Diana", "content": "Would love a part 2" }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Ruby Gems You Should Know",
+      "author": "Carol",
+      "comments": [
+        { "user": "Frank", "content": "Already using 3 of these" },
+        { "user": "Charlie", "content": "Great list" }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Object-Oriented Design in Ruby",
+      "author": "Alice",
+      "comments": [
+        { "user": "Diana", "content": "This clarified so much" },
+        { "user": "Eve", "content": "Excellent diagrams" },
+        { "user": "Frank", "content": "Sharing with my team" },
+        { "user": "Charlie", "content": "Best OOP explanation I've read" },
+        { "user": "Diana", "content": "Coming back to this often" }
+      ]
+    }
+  ]
+}
