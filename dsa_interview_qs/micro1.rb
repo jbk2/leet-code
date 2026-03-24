@@ -25,6 +25,7 @@ def max_seated_groups(rooms, groups)
       if group <= room
         sat_groups += 1
         rooms_asc[room_i] -= group
+        rooms_asc.sort!
         break
       end
     end
@@ -33,10 +34,25 @@ def max_seated_groups(rooms, groups)
   sat_groups
 end
 
+def max_seated_groups2(rooms, groups)
+  remainders = rooms.sort
+  seated = 0
+
+  groups.sort.each do |group|
+    i = remainders.bsearch_index { |room| room >= group }
+    next unless i
+    remainders[i] -= group
+    seated += 1
+    remainders.sort!
+  end
+
+  seated
+end
+
 rooms_1 = [5, 10, 8]
 groups_1 = [2, 3, 5, 6, 8]
 answer_1 = 4
-output_1 = max_seated_groups(rooms_1, groups_1)
+output_1 = max_seated_groups2(rooms_1, groups_1)
 puts output_1 == answer_1 ? "✅ correct - #{output_1} is the max number of groups seatable"
   : "❌ incorrect - #{output_1} is not the most seatable groups, #{answer_1} is"
 # Explanation:
@@ -49,7 +65,7 @@ puts output_1 == answer_1 ? "✅ correct - #{output_1} is the max number of grou
 rooms_2 = [3, 3]
 groups_2 = [4, 2, 2]
 answer_2 = 2
-output_2 = max_seated_groups(rooms_2, groups_2)
+output_2 = max_seated_groups2(rooms_2, groups_2)
 puts output_2 == answer_2 ? "✅ correct - #{output_2} is the max number of groups seatable"
   : "❌ incorrect - #{output_2} is not the most seatable groups, #{answer_2} is"
 # Explanation:
@@ -62,7 +78,7 @@ puts output_2 == answer_2 ? "✅ correct - #{output_2} is the max number of grou
 rooms_3 = [5, 5, 5]
 groups_3 = [10, 3, 2]
 answer_3 = 2
-output_3 = max_seated_groups(rooms_3, groups_3)
+output_3 = max_seated_groups2(rooms_3, groups_3)
 puts output_3 == answer_3 ? "✅ correct - #{output_3} is the max number of groups seatable"
   : "❌ incorrect - #{output_3} is not the most seatable groups, #{answer_3} is"
 # Explanation:
