@@ -19,11 +19,10 @@
 #   if hash[name] already exists && does hash[name][city] already exist, if so citys match && time within 60mins add both to invalids
 
 def invalids(data)
-  invalids = Set.new
+  invalid_ids = Set.new
   transactions = Hash.new { |hash, name| hash[name] = [] }
 
-
-  add_time_and_location_invalids = lambda do |transactions, transaction, transaction_index|
+  add_time_location_invalids = lambda do |transactions, transaction, i|
     name, time, ammount, city = transaction.split(',')
 
     invalid_transactions = transactions[name].select do |t|
@@ -33,9 +32,9 @@ def invalids(data)
     unless invalid_transactions.empty?
 
       invalid_transactions.each do |t|
-        invalids.add(t[:orig_index])
+        invalid_ids.add(t[:orig_index])
       end
-      invalids.add(transaction_index)
+      invalid_ids.add(i)
     end
   end
 
@@ -44,14 +43,12 @@ def invalids(data)
     
     transactions[name] << { city: city, time: time.to_i, ammount: ammount.to_i, orig_index: i }
     
-    invalids.add(i) if ammount.to_i >= 1000
+    invalid_ids.add(i) if ammount.to_i >= 1000
 
-    add_time_and_location_invalids.call(transactions, transaction, i)
+    add_time_location_invalids.call(transactions, transaction, i)
   end
 
-  finals = []
-  invalids.each {|i| finals << data[i]}
-  finals
+  invalid_ids.map { |i| data[i] }
 end
 
 
