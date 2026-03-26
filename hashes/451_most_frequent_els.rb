@@ -14,10 +14,14 @@ def freq_sort(string)
   final_str
 end
 
+def freq_sort2(string)
+  string.chars.tally.sort_by {|k, v| [-v, k] }.map{ |k, v| k * v}.join
+end
+
 # Example 1:
 input_1 = "tree"
 answer_1 = "eert"
-output_1 = freq_sort(input_1)
+output_1 = freq_sort2(input_1)
 puts output_1 == answer_1 ? "✅ correct - sorted order is #{output_1}" : "❌ incorrect - sorted order should be #{answer_1}, not #{output_1}"
 # Explanation: 'e' appears twice while 'r' and 't' both appear once.
 # So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
