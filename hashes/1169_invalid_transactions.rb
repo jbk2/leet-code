@@ -18,31 +18,30 @@
 #   if transaciton value >= 1000 add to invalids
 #   if hash[name] already exists && does hash[name][city] already exist, if so citys match && time within 60mins add both to invalids
 
+Transaction = Struct.new(:orig_index, :name, :time, :amount, :city)
+
 def invalids(data)
   invalid_ids = Set.new
-  transaction = Struct.new(:orig_index, :name, :time, :amount, :city)
   transactions = Hash.new { |hash, name| hash[name] = [] }
 
   data.each_with_index do |trans_str, i|
     name, time, amount, city = trans_str.split(',')
-    transactions[name] << transaction.new(i, name, time.to_i, amount.to_i, city)
+    transactions[name] << Transaction.new(i, name, time.to_i, amount.to_i, city)
   end
 
   transactions.each do |_, ts|
     n = ts.length
     
     (0...n).each do |i|
-      if ts[i].amount > 1000
-        invalid_ids.add(ts[i].orig_index)
-      else
-        (i+1...n).each do |j|
-          diff_city = ts[i].city != ts[j].city
-          within_1hr = (ts[i].time - ts[j].time).abs <= 60
-          
-          if diff_city && within_1hr
-            invalid_ids.add(ts[i].orig_index)
-            invalid_ids.add(ts[j].orig_index)
-          end
+      invalid_ids.add(ts[i].orig_index) if ts[i].amount > 1000
+    
+      (i+1...n).each do |j|
+        diff_city = ts[i].city != ts[j].city
+        within_1hr = (ts[i].time - ts[j].time).abs <= 60
+        
+        if diff_city && within_1hr
+          invalid_ids.add(ts[i].orig_index)
+          invalid_ids.add(ts[j].orig_index)
         end
       end
     end    
