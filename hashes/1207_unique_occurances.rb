@@ -28,9 +28,9 @@ output_2 = unique_occurances?(input_2)
 puts output_2 == answer_2 ? "✅ correct"
   : "❌ incorrect - #{answer_2 ? "should return true, but you returned #{output_2}" : "should return false but you retuend #{output_2}"}"
   
-  # Example 3:
-  input_3 = [-3,0,1,-3,1,1,1,-3,10,0]
-  answer_3 = true
-  output_3 = unique_occurances?(input_3)
-  puts output_3 == answer_3 ? "✅ correct"
-    : "❌ incorrect - #{answer_3 ? "should return true, but you returned #{output_1}" : "should return false but you retuend #{output_3}"}"
+# Example 3:
+input_3 = [-3,0,1,-3,1,1,1,-3,10,0]
+answer_3 = true
+output_3 = unique_occurances?(input_3)
+puts output_3 == answer_3 ? "✅ correct"
+  : "❌ incorrect - #{answer_3 ? "should return true, but you returned #{output_1}" : "should return false but you retuend #{output_3}"}"
