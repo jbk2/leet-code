@@ -20,36 +20,64 @@
 
 def invalids(data)
   invalid_ids = Set.new
+  transaction = Struct.new(:orig_index, :name, :time, :amount, :city)
   transactions = Hash.new { |hash, name| hash[name] = [] }
 
-  add_time_location_invalids = lambda do |transactions, transaction, i|
-    name, time, ammount, city = transaction.split(',')
+  data.each_with_index do |trans_str, i|
+    name, time, amount, city = trans_str.split(',')
+    transactions[name] << transaction.new(i, name, time.to_i, amount.to_i, city)
+  end
 
-    invalid_transactions = transactions[name].select do |t|
-      t[:city] != city && (t[:time] - 60..t[:time] + 60).include?(time.to_i)
-    end
+  transactions.each do |_, ts|
+    n = ts.length
     
-    unless invalid_transactions.empty?
-
-      invalid_transactions.each do |t|
-        invalid_ids.add(t[:orig_index])
+    (0...n).each do |i|
+      if ts[i].amount > 1000
+        invalid_ids.add(ts[i].orig_index)
+      else
+        (i+1...n).each do |j|
+          diff_city = ts[i].city != ts[j].city
+          within_1hr = (ts[i].time - ts[j].time).abs <= 60
+          
+          if diff_city && within_1hr
+            invalid_ids.add(ts[i].orig_index)
+            invalid_ids.add(ts[j].orig_index)
+          end
+        end
       end
-      invalid_ids.add(i)
-    end
+    end    
   end
 
-  data.each_with_index do |transaction, i|
-    name, time, ammount, city = transaction.split(',')
-    
-    transactions[name] << { city: city, time: time.to_i, ammount: ammount.to_i, orig_index: i }
-    
-    invalid_ids.add(i) if ammount.to_i >= 1000
-
-    add_time_location_invalids.call(transactions, transaction, i)
-  end
-
-  invalid_ids.map { |i| data[i] }
+  data.each_with_index.filter_map { |s, i| s if invalid_ids.include?(i) }
 end
+
+  # add_time_location_invalids = lambda do |transactions, transaction, i|
+  #   name, time, ammount, city = transaction.split(',')
+
+  #   invalid_transactions = transactions[name].select do |t|
+  #     t[:city] != city && (t[:time] - time.to_i).abs <= 60
+  #   end
+    
+  #   unless invalid_transactions.empty?
+
+  #     invalid_transactions.each do |t|
+  #       invalid_ids.add(t[:orig_index])
+  #     end
+  #     invalid_ids.add(i)
+  #   end
+  # end
+
+  # data.each_with_index do |transaction, i|
+  #   name, time, ammount, city = transaction.split(',')
+    
+  #   transactions[name] << { city: city, time: time.to_i, ammount: ammount.to_i, orig_index: i }
+    
+  #   invalid_ids.add(i) if ammount.to_i >= 1000
+
+  #   add_time_location_invalids.call(transactions, transaction, i)
+  # end
+
+  # invalid_ids.map { |i| data[i] }
 
 
 def invalid_transactions(data)
