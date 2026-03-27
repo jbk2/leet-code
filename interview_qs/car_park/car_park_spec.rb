@@ -14,7 +14,7 @@ RSpec.describe CarPark do
   
   describe "#full?" do
     context "with no availability" do
-      it "returns false" do
+      it "returns true" do
         car_park = build(:car_park)
         20.times do
           car_park.park_vehicle(:motorbike)
@@ -119,6 +119,7 @@ RSpec.describe CarPark do
         .and change {no_car_spots.availability(:van) }.by(-1)
       end
     end
+    
     context "with no car or van spots it returns no availability" do
       it "doesnt consume any parking spots, but does return 'no availability'" do
         no_car_or_van_spots = build(:car_park, car_spots: 0, van_spots: 0)
@@ -133,7 +134,7 @@ RSpec.describe CarPark do
     end
   end
   
-############### Car parking tests ##################
+############### Van parking tests ##################
   describe "parking vans" do
     context "with van spots available" do
       it "consumes one van parking spot" do
@@ -143,15 +144,30 @@ RSpec.describe CarPark do
         .and change { car_park.availability(:van) }.by(-1)
       end
     end
-    context "with no van spots but more than three car spots" do
+    
+    context "with no van spots but three or more car spots" do
       it "consumes three car spots" do
-        no_van_spots = build(:car_park, van_spots: 0)
+        no_van_spots = build(:car_park, van_spots: 0, car_spots: 3)
         expect { no_van_spots.park_vehicle(:van) }
         .to change { no_van_spots.availability(:car) }.by(-3)
         .and change {no_van_spots.availability(:motorbike) }.by(0)
         .and change {no_van_spots.availability(:van) }.by(0)
       end
     end
+    
+    context "with no van spots and only two car spots" do
+      it "consumes three car spots" do
+        no_van_spots = build(:car_park, van_spots: 0, car_spots: 2)
+        result = nil
+        expect {
+          result = no_van_spots.park_vehicle(:van)
+        }.to change { no_van_spots.availability(:car) }.by(0)
+        .and change { no_van_spots.availability(:motorbike) }.by(0)
+        .and change { no_van_spots.availability(:van) }.by(0)
+        expect(result).to eq("no spaces available for van")    
+      end
+    end
+    
     context "with no van spots and less than three car spots" do
       it "is unable to park and returns 'no availability'" do
         no_car_or_van_spots = build(:car_park, car_spots: 0, van_spots: 0)
@@ -164,5 +180,11 @@ RSpec.describe CarPark do
         expect(result).to eq("no spaces available for van")
       end
     end
+  end
+
+  describe "parking an unknwon vehicle" do
+    it "returns 'unknwown vehicle type'" do
+      expect(car_park.park_vehicle(:truck)).to eq("unknown vehicle type; 'truck'")
+    end 
   end
 end

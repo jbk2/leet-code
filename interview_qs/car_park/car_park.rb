@@ -53,7 +53,7 @@ class CarPark
 
   def park_vehicle(type)
     # raise ArgumentError, "type undefined #{type}" unless PARK_RULES.key?(type)
-    return "unknown vehicle type; #{type}" unless PARK_RULES.key?(type)
+    return "unknown vehicle type; '#{type}'" unless PARK_RULES.key?(type)
     rules = PARK_RULES[type]
 
     rules.each do |space_type, space_count|
@@ -70,18 +70,4 @@ end
 json = '{"motorbike-spots": 30,"car-spots": 200,"van-spots":20}'
 data = JSON.parse(json)
 data.transform_keys! { |k| k.underscore.to_sym }
-# puts data
 # london_car_park = CarPark.new(**data)
-# puts london_car_park.availability(:motorbike)
-# puts london_car_park.full?
-# puts london_car_park.park_vehicle(:motorbike)
-# puts london_car_park.availability(:motorbike)
-# puts london_car_park.parked(:motorbike)
-# puts london_car_park.full?
-# puts london_car_park.empty?
-# london_car_park.capacity[:van] = 0
-# puts london_car_park.availability(:car)
-# puts london_car_park.availability(:van)
-# puts london_car_park.park_vehicle(:van)
-# puts london_car_park.availability(:car)
-# puts london_car_park.availability(:van)
