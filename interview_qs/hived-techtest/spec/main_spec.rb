@@ -1,0 +1,47 @@
+require "./main_jk.rb"
+
+# Compute how much energy (kWh) certain strategies would use, using the supplied JSON files.
+
+RSpec.describe Vehicle do
+  subject(:vehicle) do
+    described_class.new(id: 1, kwh_capacity: 20, kwh_per_100_km: 10)
+  end
+  describe "instantiation" do
+    it "has :id, a :capacity_kwh, and a :kwh_per_100_km attributes" do
+      expect(vehicle).to have_attributes(
+        id: 1, kwh_capacity: 20, kwh_per_100_km: 10)
+    end
+    
+    it "has :id, :capacity, and :consumption accessor methods" do
+      expect(vehicle.id).to eq(1)
+      expect(vehicle.capacity).to eq(20)
+      expect(vehicle.consumption).to eq(10)
+    end
+  end
+end
+
+RSpec.describe Route do
+  subject(:route) do
+    described_class.new(route_id: 1,
+      stops: [{ stop_id: 12345, km_distance: 10 }, { stop_id: 67890, km_distance: 20 }])
+  end
+
+  describe "instantiation" do
+    it "has attributes of route_id and stops being an array of stops" do
+      expect(route).to have_attributes(route_id: 1, stops: [{ stop_id: 12345, km_distance: 10 }, { stop_id: 67890, km_distance: 20 }])
+      expect(route.stops).to be_a(Array)
+    end
+  end
+
+  describe "a routes stops" do
+    it "has a :stops(stop_no) stops accessor method" do
+      expect(route.stop_no(1)).to eq({ stop_id: 12345, km_distance: 10 })
+    end
+    it ":stops(no) with an invalid number returns an error" do
+      expect(route.stop_no(3)).to eq("Error: there is no stop number; 3")
+      expect(route.stop_no(0)).to eq("Error: there is no stop number; 0")
+      expect(route.stop_no(-1)).to eq("Error: there is no stop number; -1")
+    end
+  end
+
+end
