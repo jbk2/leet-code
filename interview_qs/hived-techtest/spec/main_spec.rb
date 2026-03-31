@@ -67,8 +67,8 @@ end
 RSpec.describe Fleet do
   vehicles = [{ "id": "v001", "capacity_kwh": 3, "kwh_per_100_km": 15 },
     { "id": "v006", "capacity_kwh": 7, "kwh_per_100_km": 17 },
-    { "id": "v004", "capacity_kwh": 7, "kwh_per_100_km": 17 },
-    { "id": "v009", "capacity_kwh": 16, "kwh_per_100_km": 20}]
+    { "id": "v009", "capacity_kwh": 16, "kwh_per_100_km": 20},
+    { "id": "v004", "capacity_kwh": 7, "kwh_per_100_km": 17 }]
   
   subject(:fleet) do
     described_class.new(vehicles)
@@ -83,6 +83,13 @@ RSpec.describe Fleet do
       first_vehicle = fleet.vehicles.first
       expect(first_vehicle).to be_a(Vehicle)
     end
+    
+    it "orders the vehicles least to most efficient" do
+      first_vehicle = fleet.vehicles.first
+      last_vehicle = fleet.vehicles.last
+      expect(first_vehicle.kwh_per_100_km).to be(15)
+      expect(last_vehicle.kwh_per_100_km).to be(20)
+    end
   end
 
   describe ":least_efficient_in_fleet" do
@@ -94,25 +101,38 @@ end
 
 RSpec.describe Journey do
   vehicle = Vehicle.new(id: 1, kwh_capacity: 20, kwh_per_100_km: 10)
-  route = Route.new(route_id: 1, stops: [{ stop_id: 12345, distance_km: 10 },
-    { stop_id: 67890, distance_km: 20 }])
+  route_1 = Route.new(route_id: 1, stops: [{ stop_id: 1, distance_km: 10 },
+    { stop_id: 2, distance_km: 20 }])
+  route_2 = Route.new(route_id: 2, stops: [{ stop_id: 3, distance_km: 15 },
+    { stop_id: 4, distance_km: 25 }])
+  routes = [route_1, route_2]
   
   subject(:journey) do
-    described_class.new(route: route, vehicle: vehicle)
+    described_class.new(routes: routes, vehicle: vehicle)
   end
 
   describe "instantiation" do
-    it "has a readable route attribute" do
-      expect(journey.route).to eq(route)
+    it "has a readable routes attribute" do
+      expect(journey.routes).to be_a(Array)
     end
     it "has a readable vehicle attribute" do
       expect(journey.vehicle).to eq(vehicle)
     end
-  end
-  
-  describe ":total_consumed_energy" do
-    it "give the total kwh consumed for the entire journey" do
-      expect(journey.total_consumed_energy).to be(3.0)
+
+    it "orders its routes in total distance descending order" do
+      first_route = journey.routes.first
+      last_route = journey.routes.last
+      expect(first_route.total_distance).to eq(40)
+      expect(last_route.total_distance).to eq(30)
     end
   end
+  
+  describe ":total_consumed_energy(route)" do
+    it "give the total kwh consumed for the entire journey" do
+      expect(journey.total_consumed_energy).to be(7.0)
+    end
+  end
+end
+RSpec.describe "" do
+  
 end

@@ -60,23 +60,29 @@ class Fleet
 
   private
   def parse_vehicles(vehicles)
-    vehicles.map do |vehicle|
+    vehicles_instances = vehicles.map do |vehicle|
       Vehicle.new(id: vehicle[:id], kwh_capacity: vehicle[:capacity_kwh], kwh_per_100_km: vehicle[:kwh_per_100_km])
     end
+    vehicles_instances.sort! { |a, b| a.kwh_per_100_km  <=> b.kwh_per_100_km }
   end
 end
 
 class Journey
-  attr_reader :route, :vehicle
+  attr_reader :routes, :vehicle
 
-  def initialize(route:, vehicle:)
-    @route = route
+  def initialize(routes:, vehicle:)
+    @routes = sort_routes(routes)
     @vehicle = vehicle
   end
 
   def total_consumed_energy
-    km_sum = @route.stops.sum { |stop| stop[:km_distance] }
+    km_sum = @routes.map { |route| route.stops.map { |stop| stop[:km_distance] }.sum }.sum
     @vehicle.consumption_per_km_distance(km_sum)
+  end
+
+  private
+  def sort_routes(routes)
+    routes.sort! { |a, b| b.total_distance <=> a.total_distance }
   end
 end
 
@@ -89,11 +95,11 @@ routes = routes_array.map { |route| Route.new(route_id: route[:route_id], stops:
 
 # Question 1 answer:
 least_efficient_vehicle = fleet.least_efficient_vehicle
+journey = Journey.new(routes: routes, vehicle: least_efficient_vehicle)
 
-def all_routes_consumption(routes, vehicle)
-  routes.map { |route| Journey.new(route: route, vehicle: vehicle).total_consumed_energy }.sum
-end
+puts total_energy = journey.total_consumed_energy
 
-puts total_energy = all_routes_consumption(routes, least_efficient_vehicle)
+# Question 2 answer
 
-
+# fleet is already ordered correctly
+# ordered_routes = 
