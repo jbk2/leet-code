@@ -30,6 +30,12 @@ RSpec.describe Vehicle do
       # expect(vehicle.consumption_per_km_distance("1")).to eq("given distance must be an integer")
     end
   end
+
+  describe ":max_kms_per_charge" do
+    it "correctly outputs max kms on a single charge" do
+      expect(vehicle.max_kms_per_charge).to be(200.0)
+    end
+  end
 end
 
 RSpec.describe Route do
@@ -99,37 +105,39 @@ RSpec.describe Fleet do
   end
 end
 
-RSpec.describe Journey do
-  vehicle = Vehicle.new(id: 1, kwh_capacity: 20, kwh_per_100_km: 10)
+RSpec.describe JourneyCalculator do
+  vehicle_1 = Vehicle.new(id: 1, kwh_capacity: 20, kwh_per_100_km: 10)
+  vehicle_2 = Vehicle.new(id: 2, kwh_capacity: 18, kwh_per_100_km: 15)
   route_1 = Route.new(route_id: 1, stops: [{ stop_id: 1, distance_km: 10 },
     { stop_id: 2, distance_km: 20 }])
   route_2 = Route.new(route_id: 2, stops: [{ stop_id: 3, distance_km: 15 },
     { stop_id: 4, distance_km: 25 }])
+  vehicles = [vehicle_1, vehicle_2]
   routes = [route_1, route_2]
   
-  subject(:journey) do
-    described_class.new(routes: routes, vehicle: vehicle)
+  subject(:journey_calculator) do
+    described_class.new(routes: routes, vehicles: vehicles)
   end
 
   describe "instantiation" do
     it "has a readable routes attribute" do
-      expect(journey.routes).to be_a(Array)
+      expect(journey_calculator.routes).to be_a(Array)
     end
-    it "has a readable vehicle attribute" do
-      expect(journey.vehicle).to eq(vehicle)
+    it "has a readable vehicles attribute" do
+      expect(journey_calculator.vehicles).to be_a(Array)
     end
 
     it "orders its routes in total distance descending order" do
-      first_route = journey.routes.first
-      last_route = journey.routes.last
+      first_route = journey_calculator.routes.first
+      last_route = journey_calculator.routes.last
       expect(first_route.total_distance).to eq(40)
       expect(last_route.total_distance).to eq(30)
     end
   end
   
-  describe ":total_consumed_energy(route)" do
-    it "give the total kwh consumed for the entire journey" do
-      expect(journey.total_consumed_energy).to be(7.0)
+  describe ":vehicle_routes_rqd_kwh(route)" do
+    it "gives the total kwh required to complete all routes with given vehicle" do
+      expect(JourneyCalculator.vehicle_routes_rqd_kwh(vehicle_1, routes)).to be(7.0)
     end
   end
 end

@@ -19,6 +19,10 @@ class Vehicle
     raise ArgumentError, "distance must be >= 0" if kms.negative?
     (@kwh_per_100_km.to_f / 100) * kms
   end
+
+  def max_kms_per_charge
+    @kwh_capacity.to_f / (@kwh_per_100_km.to_f / 100)
+  end
 end
 
 class Route
@@ -51,7 +55,7 @@ class Fleet
   attr_reader :vehicles
   
   def initialize(vehicles)
-    @vehicles = parse_vehicles(vehicles)
+    @vehicles = parse_and_order_vehicles(vehicles)
   end
 
   def least_efficient_vehicle
@@ -59,7 +63,7 @@ class Fleet
   end
 
   private
-  def parse_vehicles(vehicles)
+  def parse_and_order_vehicles(vehicles)
     vehicles_instances = vehicles.map do |vehicle|
       Vehicle.new(id: vehicle[:id], kwh_capacity: vehicle[:capacity_kwh], kwh_per_100_km: vehicle[:kwh_per_100_km])
     end
@@ -67,22 +71,38 @@ class Fleet
   end
 end
 
-class Journey
-  attr_reader :routes, :vehicle
+class JourneyCalculator
+  attr_reader :routes, :vehicles
 
-  def initialize(routes:, vehicle:)
+  def initialize(routes:, vehicles:)
     @routes = sort_routes(routes)
-    @vehicle = vehicle
+    @vehicles = sort_vehicles(vehicles)
   end
 
-  def total_consumed_energy
-    km_sum = @routes.map { |route| route.stops.map { |stop| stop[:km_distance] }.sum }.sum
-    @vehicle.consumption_per_km_distance(km_sum)
+  def self.routes_total_km(routes)
+    routes.map { |route| route.stops.map { |stop| stop[:km_distance] }.sum }.sum
   end
 
+  def self.vehicle_routes_rqd_kwh(vehicle, routes)
+    km_sum = self.routes_total_km(routes)
+    vehicle.consumption_per_km_distance(km_sum)
+  end
+
+  def self.vehicle_journey_consumed_kwh(vehicle, journey)
+    vehicle.consumption_per_km_distance(journey.total_distance)
+  end
+
+  def self.vehicle_can_complete_route_without_recharge?(vehicle, route)
+    vehicle.max_kms_per_charge >= route.total_distance
+  end
+  
   private
   def sort_routes(routes)
     routes.sort! { |a, b| b.total_distance <=> a.total_distance }
+  end
+  
+  def sort_vehicles(vehicles)
+    vehicles.sort! { |a, b| b.kwh_per_100_km <=> a.kwh_per_100_km }
   end
 end
 
@@ -95,11 +115,37 @@ routes = routes_array.map { |route| Route.new(route_id: route[:route_id], stops:
 
 # Question 1 answer:
 least_efficient_vehicle = fleet.least_efficient_vehicle
-journey = Journey.new(routes: routes, vehicle: least_efficient_vehicle)
+# journey = JourneyCalculator.new(routes: routes, vehicles: [least_efficient_vehicle])
+total_kms = JourneyCalculator.routes_total_km(routes)
+total_energy = JourneyCalculator.vehicle_routes_rqd_kwh(least_efficient_vehicle, routes)
 
-puts total_energy = journey.total_consumed_energy
+puts "\e[1;33m#####\e[0m"
+puts "Total kwh required for the least efficient vehicle: id# \e[1;31m#{least_efficient_vehicle.id}\e[0m
+to complete the given routes (total routes' kms; \e[1;31m#{total_kms}\e[0m)\nis => \e[1;31m#{total_energy}\e[0m"
+
 
 # Question 2 answer
+vehicle_route_table = {}
+journey_calculator = JourneyCalculator.new(routes: routes, vehicles: fleet.vehicles)
+remaining_routes = journey_calculator.routes.dup
 
-# fleet is already ordered correctly
-# ordered_routes = 
+journey_calculator.vehicles.each do |vehicle|
+  feasible_routes = remaining_routes.select do |r|
+    JourneyCalculator.vehicle_can_complete_route_without_recharge?(vehicle, r)
+  end
+  
+  next if feasible_routes.empty?
+
+  longest_feasible_route = feasible_routes.max_by(&:total_distance)
+  vehicle_route_table[vehicle] = longest_feasible_route
+  feasible_routes.delete(longest_feasible_route)
+end
+
+total_routes_km = vehicle_route_table.values.sum(&:total_distance)
+total_routes_kwh = vehicle_route_table.map do |v, r|
+  JourneyCalculator.vehicle_journey_consumed_kwh(v, r)
+end.sum
+
+puts "\e[1;33m#####\e[0m"
+puts "total paired routes consumption \e[1;31m#{total_routes_kwh}\e[0m or total kms of \e[1;31m#{total_routes_km}\e[0m"
+puts "\e[1;33m#####\e[0m"
