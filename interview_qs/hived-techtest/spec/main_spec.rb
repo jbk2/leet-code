@@ -35,7 +35,7 @@ end
 RSpec.describe Route do
   subject(:route) do
     described_class.new(route_id: 1,
-      stops: [{ stop_id: 12345, km_distance: 10 }, { stop_id: 67890, km_distance: 20 }])
+      stops: [{ stop_id: 12345, distance_km: 10 }, { stop_id: 67890, distance_km: 20 }])
   end
 
   describe "instantiation" do
@@ -88,6 +88,31 @@ RSpec.describe Fleet do
   describe ":least_efficient_in_fleet" do
     it "returns the least efficient vehicle in the fleet" do
       expect(fleet.least_efficient_vehicle.id).to eq("v009")
+    end
+  end
+end
+
+RSpec.describe Journey do
+  vehicle = Vehicle.new(id: 1, kwh_capacity: 20, kwh_per_100_km: 10)
+  route = Route.new(route_id: 1, stops: [{ stop_id: 12345, distance_km: 10 },
+    { stop_id: 67890, distance_km: 20 }])
+  
+  subject(:journey) do
+    described_class.new(route: route, vehicle: vehicle)
+  end
+
+  describe "instantiation" do
+    it "has a readable route attribute" do
+      expect(journey.route).to eq(route)
+    end
+    it "has a readable vehicle attribute" do
+      expect(journey.vehicle).to eq(vehicle)
+    end
+  end
+  
+  describe ":total_consumed_energy" do
+    it "give the total kwh consumed for the entire journey" do
+      expect(journey.total_consumed_energy).to be(3.0)
     end
   end
 end

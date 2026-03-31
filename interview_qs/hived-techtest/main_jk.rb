@@ -1,3 +1,4 @@
+require 'json'
 class Vehicle  
   def initialize(id:, kwh_capacity:, kwh_per_100_km:)
     @id = id
@@ -23,7 +24,7 @@ end
 class Route
   def initialize(route_id:, stops:)
     @route_id = route_id
-    @stops = stops
+    @stops = parse_stops(stops)
   end
 
   attr_reader :route_id, :stops
@@ -39,6 +40,11 @@ class Route
   def total_distance
     @stops.sum { |stop| stop[:km_distance] }
   end
+
+  private
+  def parse_stops(stops)
+    stops.map { |stop| { stop_id: stop[:stop_id], km_distance: stop[:distance_km]} }
+  end
 end
 
 class Fleet
@@ -49,7 +55,6 @@ class Fleet
   end
 
   def least_efficient_vehicle
-    puts @vehicles[0].inspect
     @vehicles.max_by { |vehicle| vehicle.kwh_per_100_km }
   end
 
@@ -60,3 +65,35 @@ class Fleet
     end
   end
 end
+
+class Journey
+  attr_reader :route, :vehicle
+
+  def initialize(route:, vehicle:)
+    @route = route
+    @vehicle = vehicle
+  end
+
+  def total_consumed_energy
+    km_sum = @route.stops.sum { |stop| stop[:km_distance] }
+    @vehicle.consumption_per_km_distance(km_sum)
+  end
+end
+
+fleet_json_string = File.read("./vehicles.json")
+fleet_data = JSON.parse(fleet_json_string, symbolize_names: true)
+route_json_string = File.read("./routes.json")
+routes_array = JSON.parse(route_json_string, symbolize_names: true)[:routes]
+fleet = Fleet.new(fleet_data[:vehicles])
+routes = routes_array.map { |route| Route.new(route_id: route[:route_id], stops: route[:stops]) }
+
+# Question 1 answer:
+least_efficient_vehicle = fleet.least_efficient_vehicle
+
+def all_routes_consumption(routes, vehicle)
+  routes.map { |route| Journey.new(route: route, vehicle: vehicle).total_consumed_energy }.sum
+end
+
+puts total_energy = all_routes_consumption(routes, least_efficient_vehicle)
+
+

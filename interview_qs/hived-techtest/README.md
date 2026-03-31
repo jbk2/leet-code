@@ -1,13 +1,9 @@
 # Fleet energy estimation (tech test)
 
-
-
 ## Context
-
 You work with a small **electric delivery fleet**. Each **vehicle** has a battery size and energy use per distance. Each **route** is a list of **stops**; each stop includes the **distance in km** for that leg of the journey. Compute how much energy (kWh) certain strategies would use, using the supplied JSON files.
 
 ## Data
-
 - **`vehicles.json`** — vehicles with `id`, `capacity_kwh` (battery), and `kwh_per_100_km` (consumption).
 - **`routes.json`** — routes with `route_id` and `stops`; each stop has `stop_id` and `distance_km`.
 
