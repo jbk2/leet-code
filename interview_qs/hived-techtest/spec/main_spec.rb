@@ -18,6 +18,18 @@ RSpec.describe Vehicle do
       expect(vehicle.consumption).to eq(10)
     end
   end
+
+  describe ":consumption_per_km_distance(distance)" do
+    it "returns the vehicles correct kwh consumption for the given distance" do
+      expect(vehicle.consumption_per_km_distance(1)).to eq(0.1)
+      expect(vehicle.consumption_per_km_distance(100)).to eq(10)
+      expect(vehicle.consumption_per_km_distance(250)).to eq(25)
+    end
+    it "only accepts positive integers as arguments" do
+      expect { vehicle.consumption_per_km_distance(-1) }.to raise_error(ArgumentError, "distance must be >= 0")
+      # expect(vehicle.consumption_per_km_distance("1")).to eq("given distance must be an integer")
+    end
+  end
 end
 
 RSpec.describe Route do
@@ -44,4 +56,38 @@ RSpec.describe Route do
     end
   end
 
+  describe ":total_distance" do
+    it "returns the sum of all stop km_distances" do
+      expect(route.total_distance).to eq(30)
+    end
+
+  end
+end
+
+RSpec.describe Fleet do
+  vehicles = [{ "id": "v001", "capacity_kwh": 3, "kwh_per_100_km": 15 },
+    { "id": "v006", "capacity_kwh": 7, "kwh_per_100_km": 17 },
+    { "id": "v004", "capacity_kwh": 7, "kwh_per_100_km": 17 },
+    { "id": "v009", "capacity_kwh": 16, "kwh_per_100_km": 20}]
+  
+  subject(:fleet) do
+    described_class.new(vehicles)
+  end
+
+  describe "instantiation" do
+    it "has an array of vehicles accessible via :vehicles" do
+      expect(fleet.vehicles).to be_a(Array)
+    end
+
+    it "has Vehicle objects in its vehicles attribute" do
+      first_vehicle = fleet.vehicles.first
+      expect(first_vehicle).to be_a(Vehicle)
+    end
+  end
+
+  describe ":least_efficient_in_fleet" do
+    it "returns the least efficient vehicle in the fleet" do
+      expect(fleet.least_efficient_vehicle.id).to eq("v009")
+    end
+  end
 end
