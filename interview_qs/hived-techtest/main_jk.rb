@@ -106,6 +106,7 @@ class JourneyCalculator
   end
 end
 
+############## Parse data & build Ruby objects ####################
 fleet_json_string = File.read("./vehicles.json")
 fleet_data = JSON.parse(fleet_json_string, symbolize_names: true)
 route_json_string = File.read("./routes.json")
@@ -113,19 +114,19 @@ routes_array = JSON.parse(route_json_string, symbolize_names: true)[:routes]
 fleet = Fleet.new(fleet_data[:vehicles])
 routes = routes_array.map { |route| Route.new(route_id: route[:route_id], stops: route[:stops]) }
 
-# Question 1 answer:
+# Just run `bin/rspec` to see the specs and run the below code & answers
+############## Question 1 answer: #################################
 least_efficient_vehicle = fleet.least_efficient_vehicle
-# journey = JourneyCalculator.new(routes: routes, vehicles: [least_efficient_vehicle])
 total_kms = JourneyCalculator.routes_total_km(routes)
 total_energy = JourneyCalculator.vehicle_routes_rqd_kwh(least_efficient_vehicle, routes)
 
-puts "\e[1;33m#####\e[0m"
+puts "\e[1;32m#####\e[0m"
 puts "Total kwh required for the least efficient vehicle: id# \e[1;31m#{least_efficient_vehicle.id}\e[0m
 to complete the given routes (total routes' kms; \e[1;31m#{total_kms}\e[0m)\nis => \e[1;31m#{total_energy}\e[0m"
 
 
-# Question 2 answer
-vehicle_route_table = {}
+############## Question 2 answer: #################################
+vehicle_route_pairs = {}
 journey_calculator = JourneyCalculator.new(routes: routes, vehicles: fleet.vehicles)
 remaining_routes = journey_calculator.routes.dup
 
@@ -137,15 +138,13 @@ journey_calculator.vehicles.each do |vehicle|
   next if feasible_routes.empty?
 
   longest_feasible_route = feasible_routes.max_by(&:total_distance)
-  vehicle_route_table[vehicle] = longest_feasible_route
+  vehicle_route_pairs[vehicle] = longest_feasible_route
   feasible_routes.delete(longest_feasible_route)
 end
 
-total_routes_km = vehicle_route_table.values.sum(&:total_distance)
-total_routes_kwh = vehicle_route_table.map do |v, r|
-  JourneyCalculator.vehicle_journey_consumed_kwh(v, r)
-end.sum
+total_routes_km = vehicle_route_pairs.values.sum(&:total_distance)
+total_routes_kwh = vehicle_route_pairs.map { |v, r| JourneyCalculator.vehicle_journey_consumed_kwh(v, r) }.sum
 
-puts "\e[1;33m#####\e[0m"
+puts "\e[1;32m#####\e[0m"
 puts "total paired routes consumption \e[1;31m#{total_routes_kwh}\e[0m or total kms of \e[1;31m#{total_routes_km}\e[0m"
-puts "\e[1;33m#####\e[0m"
+puts "\e[1;32m#####\e[0m"
