@@ -34,3 +34,18 @@ end
 
 
 puts active_policy_ids_sorted(policies).inspect
+
+# Write a function that sorts the keys in a hash by the length of the key as a string.
+# For instance, the hash: { abc: 'hello', 'another_key' => 123, 4567 => 'third' }
+# 
+
+def string_keys(hash)
+  hash.keys.map(&:to_s).sort_by(&:length)
+end
+
+hash = { abc: 'hello', 'another_key' => 123, 4567 => 'third' }
+answer = ["abc", "4567", "another_key"]
+output = string_keys(hash)
+puts output == answer ? "✅ passed, yes answer is; #{output}" : "❌ failed, answer should be; #{answer}, not; #{output}"
+
+puts (1..20).reduce([1, 2]) {|acc, _| acc << (acc[-1] + acc[-2])}
