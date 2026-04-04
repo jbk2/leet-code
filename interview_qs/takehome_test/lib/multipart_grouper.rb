@@ -35,12 +35,20 @@ class MultipartGrouper
   # and assign the undocked matches to the group name, then
   # match remaining input study names against remaining group study names
   # when zero remaining input study names, returned matched/group assigned input studys
+  
   # To note:
   # - greedy strategy used in assignment of input studies to study groups
   # - docking/removal implemented by popping from matches, i.e. docking order does not vary
   #   varying docking order would provide more thorough combination checking
   
+  # - not yet implemented:
+  #   - optimal group allocation == input allocated to 2 or more studies with
+  #     at least 2 studies per group
+  #   - 
+
+
   def input_group_match_combinations
+    valid = lambda { |groups| groups.values.all? { |g| g.empty? || g.size >= 2 } }
     
     no_of_groups = @groups_studies.length; no_of_input_studies = @input_studies.length
     
@@ -59,7 +67,7 @@ class MultipartGrouper
           remaining_inputs.delete_if { |study_name| matches.include?(study_name) }
         end
 
-        if remaining_inputs.empty?
+        if remaining_inputs.empty? && valid.call(grouped_inputs)
           return grouped_inputs.values 
         end
       end
