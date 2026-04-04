@@ -23,14 +23,23 @@ RSpec.describe MultipartGrouper do
     let(:input_pathname) { "test_one" }
     it ":parse_group_csvs returns a hash table of study group name to study names" do
       group_table = { mri_axial_skeleton: ["MRI Cervical Spine","MRI Hip Both","MRI Lumbar Spine","MRI Pelvis","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Lumbar/Sacral","MRI Spine Sacrum","MRI Spine Thoracic"],
-        mri_lower_limb: ["MRI Ankle","MRI Femur","MRI Foot","MRI Hip","MRI Knee","MRI Lower Leg","MRI Lumbar Spine","MRI Pelvis","MRI SIJ","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Sacrum","MRI Thigh"],
-        mri_upper_limb: ["MRI Brachial Plexus","MRI Cervical Spine","MRI Elbow","MRI Fingers","MRI Forearm","MRI Hand","MRI Radius & Ulnar","MRI Scaphoid","MRI Scapula","MRI Shoulder","MRI Thumb","MRI Upper Arm","MRI Wrist"]
-      }
-
-      expect(subject.send(:parse_group_csvs)).to eq(group_table)
-    end
+      mri_lower_limb: ["MRI Ankle","MRI Femur","MRI Foot","MRI Hip","MRI Knee","MRI Lower Leg","MRI Lumbar Spine","MRI Pelvis","MRI SIJ","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Sacrum","MRI Thigh"],
+      mri_upper_limb: ["MRI Brachial Plexus","MRI Cervical Spine","MRI Elbow","MRI Fingers","MRI Forearm","MRI Hand","MRI Radius & Ulnar","MRI Scaphoid","MRI Scapula","MRI Shoulder","MRI Thumb","MRI Upper Arm","MRI Wrist"]
+    }
     
+    expect(subject.send(:parse_group_csvs)).to eq(group_table)
   end
+end
+
+context "counting number of matches in each study" do
+  let(:input_pathname) { "test_one" }
+  it "returns and array of count integers for each study group" do
+    count_result = { mri_axial_skeleton: 5, mri_lower_limb: 4, mri_upper_limb: 2 }
+    expect(subject.study_group_match_count.length).to be(3)
+    expect(subject.study_group_match_count).to eq(count_result)
+    p subject.input_group_match_combinations
+  end
+end
   
   context "finds correct groups of two two and two" do
     let(:input_pathname) { "solved_example" }
