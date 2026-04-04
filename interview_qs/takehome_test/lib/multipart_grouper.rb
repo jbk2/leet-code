@@ -4,12 +4,15 @@ require "csv"
 # 
 
 class MultipartGrouper
-  def initialize(input_file:, group_files:)
-    @input_file = input_file
-    @group_files = group_files
-    @study_groups = group_csvs
+  def initialize(input_path:, group_paths:)
+    @input_path = input_path
+    @input_studies = parse_input_csv
+    @group_paths = group_paths
+    @groups_studies = parse_group_csvs
   end
-
+  
+  attr_reader :groups_studies
+  
   # Implement this method
   def group
     [
@@ -20,25 +23,29 @@ class MultipartGrouper
   end
 
   private
+  def parse_input_csv
+    input_studies = {}
+    
+    CSV.foreach(@input_path, headers: true) do |row|
+      id = row["ID"].to_i
+      input_studies[id] = row["Study Name"]
+    end
 
-  def input_csv
-    @input_csv ||= CSV.read(
-      @input_file,
-      headers: true
-    )
+    input_studies
   end
 
-  def group_csvs
-    groups = {}
-    @group_files.each do |file_path|
+  def parse_group_csvs
+    groups = Hash.new { |h, k| h[k] = [] }
+
+    @group_paths.each do |file_path|
       study_name = File.basename(file_path, '.csv').tr(' ', '_').downcase.to_sym
-      groups[study_name] = []
-      # file_contents = File.read(file_path)
+      
       CSV.foreach(file_path, headers: true) do |row|
         groups[study_name] << row["Study Name"]
       end
       groups[study_name].sort!
     end
+
     groups
   end
 end

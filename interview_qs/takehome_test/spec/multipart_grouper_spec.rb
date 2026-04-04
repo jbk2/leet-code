@@ -6,18 +6,28 @@ RSpec.describe MultipartGrouper do
   let(:input_path) { "./spec/fixtures/inputs/#{input_pathname}.csv" }
 
   subject do
-    MultipartGrouper.new(input_file: input_path, group_files: group_paths)
+    MultipartGrouper.new(input_path: input_path, group_paths: group_paths)
   end
 
+  context "parsing the input csv" do
+    let(:input_pathname) { "test_one" }
+    it ":parse_input_csv returns hash if study ids and names" do
+      parsed_input_study_names = { 1 => "MRI Cervical Spine", 2 => "MRI Elbow", 3 => "MRI Lumbar Spine",
+        4 => "MRI Pelvis", 5 => "MRI Spine Sacrum", 6 => "MRI Spine Coccyx" }
+
+      expect(subject.send(:parse_input_csv)).to eq(parsed_input_study_names)
+    end
+  end 
+  
   context "parsing the groups" do
     let(:input_pathname) { "test_one" }
-    it ":group_csvs parses the groups CSVs contents into array of ruby objects" do
-      group_objs = { mri_axial_skeleton: ["MRI Cervical Spine","MRI Hip Both","MRI Lumbar Spine","MRI Pelvis","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Lumbar/Sacral","MRI Spine Sacrum","MRI Spine Thoracic"],
+    it ":parse_group_csvs returns a hash table of study group name to study names" do
+      group_table = { mri_axial_skeleton: ["MRI Cervical Spine","MRI Hip Both","MRI Lumbar Spine","MRI Pelvis","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Lumbar/Sacral","MRI Spine Sacrum","MRI Spine Thoracic"],
         mri_lower_limb: ["MRI Ankle","MRI Femur","MRI Foot","MRI Hip","MRI Knee","MRI Lower Leg","MRI Lumbar Spine","MRI Pelvis","MRI SIJ","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Sacrum","MRI Thigh"],
         mri_upper_limb: ["MRI Brachial Plexus","MRI Cervical Spine","MRI Elbow","MRI Fingers","MRI Forearm","MRI Hand","MRI Radius & Ulnar","MRI Scaphoid","MRI Scapula","MRI Shoulder","MRI Thumb","MRI Upper Arm","MRI Wrist"]
       }
 
-      expect(subject.send(:group_csvs)).to eq(group_objs)
+      expect(subject.send(:parse_group_csvs)).to eq(group_table)
     end
     
   end
