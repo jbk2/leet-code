@@ -28,33 +28,82 @@ class MultipartGrouper
     @groups_studies.each {|study| puts "#{study}\n\n"}
   end
 
+  # Approach - Iterate, at most, the following ammount of times;
+  #   (0..no_of_groups -1) x (0..no_of_input_studies - 1) times
+  # using iterating counters to remove/dock (via pop) matches from;
+  #   greedy matches of - group study names & remaining (unassigned) input study names
+  # and assign the undocked matches to the group name, then
+  # match remaining input study names against remaining group study names
+  # when zero remaining input study names, returned matched/group assigned input studys
+  # To note:
+  # - greedy strategy used in assignment of input studies to study groups
+  # - docking/removal implemented by popping from matches, i.e. docking order does not vary
+  #   varying docking order would provide more thorough combination checking
+  
   def input_group_match_combinations
-    grouped_inputs = @groups_studies.transform_values { [] }
-    remaining_inputs = @input_studies.values.dup
-    all_assigned = false
     
-    until all_assigned do
-      # this is just the max matches first approach - how to reduce and try other approaches
-      # maybe just try max on another group then try the three groups
-      # n = grouped_inputs.length
-      @groups_studies.each do |group_name, studies|
-        matches = studies.intersection(remaining_inputs)
-        
-        # add group_name and matches to grouped inputs
-        grouped_inputs[group_name] = matches
-        # remove matches from remaining_inputs
-        remaining_inputs.delete_if { |study_name| matches.include?(study_name) }
-        
+    no_of_groups = @groups_studies.length; no_of_input_studies = @input_studies.length
+    
+    (0..no_of_groups - 1).each do |docked_group_no|
+      docked_group_name = @groups_studies.keys[docked_group_no]
+      
+      (0..no_of_input_studies - 1).each do |docked_match_count|
+        remaining_inputs = @input_studies.values.dup
+        grouped_inputs = @groups_studies.transform_values { [] }
+
+        @groups_studies.each do |group_name, groups_studies|
+          matches = groups_studies.intersection(remaining_inputs)
+          match_removal_count = [matches.count, docked_match_count].min
+          matches.pop(match_removal_count) if group_name == docked_group_name
+          grouped_inputs[group_name] = matches
+          remaining_inputs.delete_if { |study_name| matches.include?(study_name) }
+        end
+
         if remaining_inputs.empty?
-          # we've matched everything - finish
-          all_assigned = true
-          break
+          return grouped_inputs.values 
         end
       end
-      
     end
-    grouped_inputs.values
+
+    return "unmatchables remain"
+
   end
+    
+  #   until all_assigned do
+  #     grouped_inputs = @groups_studies.transform_values { [] }
+  #     remaining_inputs = @input_studies.values.dup
+      
+  #     docked_matches_group = @groups_studies.keys.sample
+      
+  #     @groups_studies.each do |group, studies|
+  #       matches = studies.intersection(remaining_inputs)    
+        
+  #       # remove matches from first group in order to trial different match combinations
+  #       match_removal_count += 1 while match_removal_count < matches.count
+        
+  #       if group == docked_matches_group
+  #         to_delete = matches.sample(match_removal_count)
+  #         matches = matches.delete_if { |match| to_delete.include?(match) }
+  #       end
+        
+  #       # add group_name matches
+  #       grouped_inputs[group] = matches
+  #       # update remaining with those already matched
+  #       remaining_inputs.delete_if { |study_name| matches.include?(study_name) }
+        
+  #       if remaining_inputs.empty?
+  #         # we've matched everything - finish
+  #         all_assigned = true
+  #         break
+  #       end
+  #     end
+      
+  #   end
+  #   grouped_inputs.values
+  # end
+
+  # Approach - Max match assignment, then assigning remainer
+  # 
 
   def study_group_match_count
     group_match_counts = Hash.new(0)
