@@ -10,15 +10,15 @@
 
 def max_attendances(events)
   attendable_event_count = 0
-  ordered_events = events.sort
+  ordered_events = events.sort_by { |start_day, end_day| [end_day, start_day] }
   min_day, max_day = events.flatten.min, events.flatten.max
   days_taken = (min_day..max_day).to_h { |day| [day, false] }
 
-  ordered_events.each do |event|
-    event.each do |day|
+  ordered_events.each do |start_day, end_day|
+    (start_day..end_day).each do |day|
       if days_taken[day] == false
         attendable_event_count += 1
-        days_taken[day] == true
+        days_taken[day] = true
         break
       end
     end
