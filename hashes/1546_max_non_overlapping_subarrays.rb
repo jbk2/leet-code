@@ -6,21 +6,37 @@
 # -104 <= nums[i] <= 104
 # 0 <= target <= 106
  
-def max_no_non_overlapping_array(array, target)
-  
+def max_number_non_overlapping_array(array, target)
+  valid_arr_count = 0
+  sum_i = { 0 => true }
+  running_sum = 0
+
+  (0...array.length).each do |i|
+    running_sum += array[i]
+    if sum_i[running_sum - target]
+      valid_arr_count += 1
+      running_sum = 0; sum_i = { 0 => true };
+    end
+    sum_i[running_sum] = i
+  end
+
+  valid_arr_count
 end
 
+nums_1 = [1,1,1,1,1]
+target_1 = 2
+puts max_number_non_overlapping_array(nums_1, target_1)
 
 
 
 RSpec.describe do
-  describe ":max_no_non_overlapping_array(nums, target)" do    
+  describe ":max_number_non_overlapping_array(nums, target)" do    
     # Explanation: There are 2 non-overlapping subarrays [1,1,1,1,1] with sum equals to target(2).
     it "test 1 returns the correct result" do
       nums_1 = [1,1,1,1,1]
       target_1 = 2
       answer_1 = 2
-      output_1 = max_no_non_overlapping_array(nums_1, target_1)
+      output_1 = max_number_non_overlapping_array(nums_1, target_1)
       expect(output_1).to eq(answer_1)
     end
     
@@ -30,8 +46,8 @@ RSpec.describe do
       nums_2 = [-1,3,5,1,4,2,-9]
       target_2 = 6
       answer_2 = 2
-      output_2 = max_no_non_overlapping_array(nums_2, target_2)
-      expect(output_1).to eq(answer_1)
+      output_2 = max_number_non_overlapping_array(nums_2, target_2)
+      expect(output_2).to eq(answer_2)
     end
   end
 end
