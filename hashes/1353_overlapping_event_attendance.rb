@@ -8,8 +8,23 @@
 # 1 <= startDayi <= endDayi <= 105
  
 
-def max_attendances(event_days)
-  
+def max_attendances(events)
+  attendable_event_count = 0
+  ordered_events = events.sort
+  min_day, max_day = events.flatten.min, events.flatten.max
+  days_taken = (min_day..max_day).to_h { |day| [day, false] }
+
+  ordered_events.each do |event|
+    event.each do |day|
+      if days_taken[day] == false
+        attendable_event_count += 1
+        days_taken[day] == true
+        break
+      end
+    end
+  end
+
+  attendable_event_count
 end
 
 RSpec.describe ":max_attendances" do
@@ -23,7 +38,7 @@ RSpec.describe ":max_attendances" do
     it "returns correct val" do
       events = [[1,2],[2,3],[3,4]]
       answer = 3
-      outpu = max_attendances(events)
+      output = max_attendances(events)
       expect(output).to eq(answer)
     end
   end
