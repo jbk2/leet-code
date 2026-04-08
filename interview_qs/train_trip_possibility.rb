@@ -18,22 +18,16 @@ def check_trip(start, target, stations, station_links)
   
   visited = Set.new
 
-  target_found = lambda do |station|
-    return true if station == target
+  dfs = lambda do |station|
+    return false if visited.include?(station)
+    visited.add(station)
     
-    stops_arr = station_links[station]
-    return false if stops_arr.nil? || stops_arr.empty?
-
-    stops_arr.each do |stop|
-      next if visited.include?(stop)
-      visited.add(stop)
-
-      return true if target_found.call(stop)
+    (station_links[station] || []).any? do |stop|
+      stop == target || dfs.call(stop)
     end
-    false
   end
 
-  target_found.call(start) ? "Trip is Possible" : "Trip is impossible"
+  dfs.call(start) ? "Trip is Possible" : "Trip is impossible"
 end
 
 RSpec.describe ":check_trip" do
