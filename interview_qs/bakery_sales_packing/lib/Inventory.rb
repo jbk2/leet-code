@@ -2,35 +2,29 @@
 
 class Inventory
   def initialize(json_file_path)
-    @products = parse_items(json_file_path)
+    @products = import_inventory(json_file_path)
   end
 
+  def product(code)
+    @products[code.to_sym]
+  end
 
   attr_reader :products
 
   private
-  def parse_items(json_file_path)
-    products = {}
-    file = File.read(File.join(__dir__, json_file_path))
-    json = JSON.parse(file)
-    
-    json["products"].each do |product|
-      product.transform_keys!(&:to_sym)
-      packs = []
-      
-      product[:packs].each do |pack|
-        pack.transform_keys!(&:to_sym)
-        packs << { item_count: pack[:item_count], price: pack[:price] }
-      end
-      
-    
-      # puts p[:code]
-      products[product[:code].downcase.to_sym] = {
+  def import_inventory(json_file_path)
+    path = File.join(__dir__, json_file_path)
+    data = JSON.parse(File.read(path), symbolize_names: true)
+
+    data[:products].each_with_object({}) do |product, products|
+      key = product[:code].downcase.to_sym
+
+      products[key] = {
         name: product[:name].downcase,
-        packs: packs
+        packs: product[:packs].map do |pack|
+          { item_count: pack[:item_count], price: pack[:price] }
+        end
       }
     end
-    products
   end
-
 end

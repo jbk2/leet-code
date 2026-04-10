@@ -1,23 +1,48 @@
 require 'json'
 require_relative "../lib/order.rb"
 RSpec.describe "Order" do
-  file = File.read(File.join(__dir__, "/order1.json"))
-  order_json = JSON.parse(file)["order"]
-  p order_json
+  json_file_path = "../spec/test_data/order1.json"
 
-  subject(:order) do
-    Order.new(order_json)
+  subject(:order_from_file) do
+    Order.from_file(json_file_path)
+  end
+  
+  subject(:order_json_string) do
+    path = File.join(__dir__, '../spec/test_data/order1.json')
+    json_string = File.read(path)
+  end
+  
+  subject(:order_from_json) do
+    Order.new(order_json_string)
   end
 
   describe "instantiation" do
-    xit "parses order input in a string into Ruby Object order hash items" do
-      parsed_items = [
-        { item_name: 'vegemite scroll', item_code: 'VS5', quantity: 10 },
-        { item_name: 'blueberry muffin' , item_code: 'MB11', quantity: 14 },
-        { item_name: 'croissant', item_code: 'CF', quantity: 13 }
-      ]
-      # expect(order.items.count).to eq(3)
-      expect(order.items).to eq(parsed_items)
+    context "from raw json" do
+      it "can create an order from either raw JSON or a JSON file" do
+        order = Order.new(order_json_string)
+        expect(order.items).to be_truthy
+      end
+    end
+    
+    context "from a JSON file" do
+      it "raises an error if the file is non-existent" do
+        expect { Order.from_file('non_existent_file.json')}.to raise_error(Errno::ENOENT)
+      end
+  
+      it "raises when the file is empty" do
+        empty_file_path = "../spec/test_data/empty_file.json"
+        expect { Order.from_file(empty_file_path) }.to raise_error(JSON::ParserError)
+      end
+  
+      it "parses order input in a string into Ruby Object order hash items" do
+        parsed_items = [
+          { item_code: 'vs5', quantity: 10 },
+          { item_code: 'mb11', quantity: 14 },
+          { item_code: 'cf', quantity: 13 }
+        ]
+        # expect(order.items.count).to eq(3)
+        expect(order_from_file.items).to eq(parsed_items)
+      end
     end
   end
 end
