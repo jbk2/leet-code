@@ -4,6 +4,7 @@ class Bakery
   include OrderHelper
 
   def initialize(inventory_file_path)
+    raise ArgumentError, "must instantiate with a path to an inventory file" if !inventory_file_path
     @inventory = Inventory.new(inventory_file_path)
     @orders = []
   end

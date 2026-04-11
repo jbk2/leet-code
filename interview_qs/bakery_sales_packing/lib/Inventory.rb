@@ -1,4 +1,4 @@
-# require_relative "../spec/inventory.json"
+require "json"
 
 class Inventory
   def initialize(json_file_path)
@@ -13,7 +13,7 @@ class Inventory
 
   private
   def import_inventory(json_file_path)
-    path = File.join(__dir__, json_file_path)
+    path = File.expand_path(json_file_path, __dir__)
     data = JSON.parse(File.read(path), symbolize_names: true)
 
     data[:products].each_with_object({}) do |product, products|

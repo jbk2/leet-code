@@ -22,6 +22,9 @@ module OrderHelper
       product_pack = product_packs.find do |pack|
         pack[:item_count] == item_pack[:pack_size]
       end
+      if product_pack.nil?
+        raise KeyError, "no catalog pack for size #{item_pack[:pack_size].inspect}" 
+      end
       total += product_pack[:price] * item_pack[:pack_quantity]
     end
     
@@ -76,7 +79,6 @@ module OrderHelper
         # it can be iterated over with pack_sizes
         queue << [remaining_items, pack_count + 1]
       end
-      nil
     end
   end
   

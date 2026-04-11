@@ -12,7 +12,7 @@ class Order
       when String then JSON.parse(json, symbolize_names: true)
       when Hash then json
       else
-        raise ArgumentError "Order needs a JSON String or Hash (with an order key),
+        raise ArgumentError, "Order needs a JSON String or Hash (with an order key),
           instead received this class; #{json.class}"
       end
 
