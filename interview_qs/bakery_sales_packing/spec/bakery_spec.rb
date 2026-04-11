@@ -1,10 +1,16 @@
 require 'json'
 require_relative "../lib/bakery.rb"
+require_relative "../lib/order.rb"
 
 
 RSpec.describe Bakery do
   subject(:bakery) do
     Bakery.new('../spec/inventory.json')
+  end
+
+  subject(:order1_json) do
+      path = File.join(__dir__, '../spec/test_data/order1.json')
+      JSON.parse(File.read(path), symbolize_names: true)
   end
 
   describe "instantiation" do
@@ -28,11 +34,16 @@ RSpec.describe Bakery do
   end
 
   describe ":add_order" do
-    xit "creates a valid order and adds it to the bakerys orders" do
-      path = File.join(__dir__, '../spec/test_data/order1.json')
-      order_json = JSON.parse(File.read(path), symbolize_names: true)
-      expect { bakery.add_order(order_json) }
-        .to change { bakery.orders}.by(1)
+    it "creates and adds an order @orders" do
+      expect { bakery.new_order(order1_json) } 
+        .to change { bakery.orders.count }.by(1)
+    end
+
+    xit "computes total price and pack breakdown for all of orders items" do
+      bakery.new_order(order1_json)
+      price = bakery.orders.last.order_total
+      expect(price).to be(98.63)
     end
   end
+
 end
