@@ -24,6 +24,20 @@ class Order
     self.order_total = items.map { |item| item[:item_total] }.sum
   end
 
+  # order needs to have been computed by bakery before this can run
+  # TODO add protection to ensure order is computed before this runs
+  def print_order
+    items.map do |item|
+      code, quantity, item_total = item[:item_code], item[:quantity], item[:item_total]
+      item_str = "\n#{quantity} #{code.upcase} £#{item_total}"
+      packs = item[:packs].map do |pack|
+        "\n\t#{pack[:pack_quantity]} x #{pack[:pack_size]} £#{pack[:pack_price]}"
+      end
+      packs_str = packs.join
+      item_str + packs_str
+    end.join
+  end
+
   attr_reader :items
   attr_accessor :order_total
 

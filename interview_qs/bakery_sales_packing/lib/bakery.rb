@@ -12,6 +12,7 @@ class Bakery
     order = Order.new(order_hash)
     computed_order = compute_order(order)
     @orders << computed_order
+    computed_order
   end
 
   attr_reader :inventory, :orders

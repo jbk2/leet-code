@@ -46,4 +46,14 @@ RSpec.describe Bakery do
     end
   end
 
+  describe ":print_order" do
+    it "outputs the order correctly formatted" do
+      order = bakery.new_order(order1_json)
+      correct_format = "\n10 VS5 £17.98\n\t2 x 5 £8.99\n14 MB11 £54.8\n\t1 x 8 £24.95\n\t3 x 2 £9.95" \
+        "\n13 CF £25.85\n\t2 x 5 £9.95\n\t1 x 3 £5.95"
+      
+      expect(order.print_order).to eq(correct_format)
+    end
+  end
+
 end

@@ -27,7 +27,7 @@ module OrderHelper
     total.round(2)
   end
 
-  # TODO tube for optimality:
+  # Optimal definition:
   # - all items must get packed
   # - least number of packs
   def compute_packs(product_packs, quantity)

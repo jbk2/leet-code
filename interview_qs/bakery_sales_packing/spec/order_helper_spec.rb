@@ -22,9 +22,6 @@ RSpec.describe OrderHelper do
         { item_code: "mb11", name: "blueberry muffin", quantity: 14, packs: [{ pack_size: 8, pack_price: 24.95, pack_quantity: 1 }, { pack_size: 2, pack_price: 9.95 , pack_quantity: 3 }], item_total: 54.80 },
         { item_code: "cf", name: "croissant", quantity: 13, packs: [{ pack_size: 5, pack_price: 9.95, pack_quantity: 2 }, { pack_size: 3, pack_price: 5.95, pack_quantity: 1 }], item_total: 25.85 }]
 
-      # subject(:order_from_file) do
-      #   Order.from_file(json_file_path)
-      # end
       expect(order.items).to eq(pre_compute_order_items)
       helper_host.compute_order(order)
       expect(order.items).to eq(post_compute_order_items)
