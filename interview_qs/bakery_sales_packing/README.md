@@ -1,3 +1,8 @@
+### JK Notes
+- take home project completed
+- read spec files
+- run `rspec` from root to see passing tests (populated with the README original data)
+
 # Bakery sales & packing
 
 ## Background
