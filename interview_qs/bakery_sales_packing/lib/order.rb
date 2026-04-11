@@ -20,8 +20,12 @@ class Order
     @order_total = 0
   end
 
+  def update_order_total
+    self.order_total = items.map { |item| item[:item_total] }.sum
+  end
 
-  attr_reader :items, :order_total
+  attr_reader :items
+  attr_accessor :order_total
 
   private
   def parse_order(json_hash)

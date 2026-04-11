@@ -39,7 +39,7 @@ RSpec.describe Bakery do
         .to change { bakery.orders.count }.by(1)
     end
 
-    xit "computes total price and pack breakdown for all of orders items" do
+    it "computes total price and pack breakdown for all of orders items" do
       bakery.new_order(order1_json)
       price = bakery.orders.last.order_total
       expect(price).to be(98.63)

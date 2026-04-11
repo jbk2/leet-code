@@ -11,13 +11,8 @@ class Bakery
   def new_order(order_hash)
     order = Order.new(order_hash)
     computed_order = compute_order(order)
-    # add name and calculate packs and price on order 
-    @orders << order
+    @orders << computed_order
   end
 
-
   attr_reader :inventory, :orders
-
-  private
-  
 end
