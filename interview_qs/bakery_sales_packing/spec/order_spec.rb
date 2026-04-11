@@ -36,9 +36,9 @@ RSpec.describe "Order" do
   
       it "parses order input in a string into Ruby Object order hash items" do
         parsed_items = [
-          { item_code: 'vs5', quantity: 10 },
-          { item_code: 'mb11', quantity: 14 },
-          { item_code: 'cf', quantity: 13 }
+          { item_code: 'vs5', name: "", quantity: 10, packs: [], item_total: 0 },
+          { item_code: 'mb11', name: "", quantity: 14, packs: [], item_total: 0},
+          { item_code: 'cf', name: "", quantity: 13, packs: [], item_total: 0}
         ]
         # expect(order.items.count).to eq(3)
         expect(order_from_file.items).to eq(parsed_items)

@@ -17,17 +17,18 @@ class Order
       end
 
     @items = parse_order(data)
+    @order_total = 0
   end
 
 
-  attr_reader :items
+  attr_reader :items, :order_total
 
   private
   def parse_order(json_hash)
     json_hash[:order].split(/\n/).map do |item|
       quantity, code = item.split(" ")
 
-      { item_code: code.downcase, quantity: quantity.to_i }
+      { item_code: code.downcase, name: "", quantity: quantity.to_i, packs: [], item_total: 0 }
     end
   end
 end
