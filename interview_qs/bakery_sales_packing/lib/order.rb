@@ -2,7 +2,7 @@ class Order
   def self.from_file(json_file_path)
     path = File.join(__dir__, json_file_path)
     unless File.read(path) then raise Errno::ENOENT end
-    json_string = File.read(path, symbolize_names: true)
+    json_string = File.read(path)
     new(json_string)
   end
 

@@ -9,6 +9,7 @@ RSpec.describe OrderHelper do
       def initialize(inventory)
         @inventory = inventory
       end
+      attr_reader :inventory
     end.new(inventory)
   end
   describe ":compute_order" do
@@ -23,7 +24,7 @@ RSpec.describe OrderHelper do
         { item_code: "cf", name: "croissant", quantity: 13, packs: [{ pack_size: 5, pack_price: 9.95, pack_quantity: 2 }, { pack_size: 3, pack_price: 5.95, pack_quantity: 1 }], item_total: 25.85 }]
 
       expect(order.items).to eq(pre_compute_order_items)
-      helper_host.compute_order(order)
+      helper_host.compute_order(order, helper_host.inventory)
       expect(order.items).to eq(post_compute_order_items)
     end
   end
@@ -31,16 +32,16 @@ RSpec.describe OrderHelper do
   describe ":compute_packs" do
     let(:packs) { [{ item_count: 3, price: 6.99 }, { item_count: 5, price: 8.99 }] }
     it "returns an array of hashes of pack_size and quantity" do
-      expect(helper_host.compute_packs(packs, 10)).to eq([{ pack_price: 8.99, pack_size: 5, pack_quantity: 2 }])
-      expect(helper_host.compute_packs(packs, 19)).to eq([{ pack_price: 8.99, pack_size: 5, pack_quantity: 2 }, { pack_price: 6.99, pack_size: 3, pack_quantity: 3 }])
+      expect(helper_host.send(:compute_packs, packs, 10)).to eq([{ pack_price: 8.99, pack_size: 5, pack_quantity: 2 }])
+      expect(helper_host.send(:compute_packs,packs, 19)).to eq([{ pack_price: 8.99, pack_size: 5, pack_quantity: 2 }, { pack_price: 6.99, pack_size: 3, pack_quantity: 3 }])
     end
     
     it "should raise Argument Error if quantity is below smallest pack size" do
-      expect { helper_host.compute_packs(packs, 2) }
+      expect { helper_host.send(:compute_packs, packs, 2) }
         .to raise_error(ArgumentError, "quantity must be above at least one pack size")
     end
     it "should raise Argument Error if there are leftover packs that don't fit in oack mix" do
-      expect { helper_host.compute_packs(packs, 7) }
+      expect { helper_host.send(:compute_packs,packs, 7) }
         .to raise_error(ArgumentError, "item volume not cleanly divisible amongst product pack sizes")
     end
   end

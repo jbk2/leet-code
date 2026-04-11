@@ -10,7 +10,7 @@ class Bakery
 
   def new_order(order_hash)
     order = Order.new(order_hash)
-    computed_order = compute_order(order)
+    computed_order = compute_order(order, inventory)
     @orders << computed_order
     computed_order
   end
