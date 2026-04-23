@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_23_182957) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_190143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,7 +19,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_182957) do
     t.string "make"
     t.integer "mileage"
     t.string "model"
+    t.integer "state", default: 0, null: false
     t.datetime "updated_at", null: false
     t.integer "year"
+    t.index ["state"], name: "index_requests_on_state"
   end
 end
