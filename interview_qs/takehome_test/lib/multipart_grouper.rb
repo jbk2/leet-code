@@ -1,7 +1,6 @@
 require "csv"
 
 # build the three groups into three sets from the csvs
-# 
 
 class MultipartGrouper
   def initialize(input_path:, group_paths:)
@@ -25,7 +24,7 @@ class MultipartGrouper
   def output
     p @input_studies
     puts "######################"
-    @groups_studies.each {|study| puts "#{study}\n\n"}
+    @groups_studies.each {|study| puts "#{study}\n\n###############"}
   end
 
   # Approach - Iterate, at most, the following ammount of times;
@@ -116,13 +115,22 @@ class MultipartGrouper
   def study_group_match_count
     group_match_counts = Hash.new(0)
     # input_study_names_sorted = @input_studies.values.sort
-    
     @groups_studies.each do |group_name, study_names|
       intersect_count = study_names.intersection(@input_studies.values).count
       group_match_counts[group_name] = intersect_count
     end
 
     group_match_counts
+  end
+
+  def study_groups
+    @input_studies.map do |id, study_name|
+      data = { id: id, groups: [] }
+      @groups_studies.each do |group_name, studies|
+        data[:groups] << group_name if studies.include?(study_name)
+      end
+      [ study_name, data ]
+    end.sort_by { |k, v| v[:id] }.to_h
   end
 
   private
@@ -141,7 +149,7 @@ class MultipartGrouper
     groups = Hash.new { |h, k| h[k] = [] }
 
     @group_paths.each do |file_path|
-      study_name = File.basename(file_path, '.csv').tr(' ', '_').downcase.to_sym
+      study_name = File.basename(file_path, '.csv').tr(' ', '_').downcase
       
       CSV.foreach(file_path, headers: true) do |row|
         groups[study_name] << row["Study Name"]

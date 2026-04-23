@@ -11,7 +11,7 @@ RSpec.describe MultipartGrouper do
 
   context "parsing the input csv" do
     let(:input_pathname) { "test_one" }
-    it ":parse_input_csv returns hash if study ids and names" do
+    it ":parse_input_csv returns hash of study ids and names" do
       parsed_input_study_names = { 1 => "MRI Cervical Spine", 2 => "MRI Elbow", 3 => "MRI Lumbar Spine",
         4 => "MRI Pelvis", 5 => "MRI Spine Sacrum", 6 => "MRI Spine Coccyx" }
 
@@ -22,9 +22,9 @@ RSpec.describe MultipartGrouper do
   context "parsing the groups" do
     let(:input_pathname) { "test_one" }
     it ":parse_group_csvs returns a hash table of study group name to study names" do
-      group_table = { mri_axial_skeleton: ["MRI Cervical Spine","MRI Hip Both","MRI Lumbar Spine","MRI Pelvis","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Lumbar/Sacral","MRI Spine Sacrum","MRI Spine Thoracic"],
-      mri_lower_limb: ["MRI Ankle","MRI Femur","MRI Foot","MRI Hip","MRI Knee","MRI Lower Leg","MRI Lumbar Spine","MRI Pelvis","MRI SIJ","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Sacrum","MRI Thigh"],
-      mri_upper_limb: ["MRI Brachial Plexus","MRI Cervical Spine","MRI Elbow","MRI Fingers","MRI Forearm","MRI Hand","MRI Radius & Ulnar","MRI Scaphoid","MRI Scapula","MRI Shoulder","MRI Thumb","MRI Upper Arm","MRI Wrist"]
+      group_table = { "mri_axial_skeleton" => ["MRI Cervical Spine","MRI Hip Both","MRI Lumbar Spine","MRI Pelvis","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Lumbar/Sacral","MRI Spine Sacrum","MRI Spine Thoracic"],
+      "mri_lower_limb" => ["MRI Ankle","MRI Femur","MRI Foot","MRI Hip","MRI Knee","MRI Lower Leg","MRI Lumbar Spine","MRI Pelvis","MRI SIJ","MRI SIJ Both","MRI Spine Coccyx","MRI Spine Sacrum","MRI Thigh"],
+      "mri_upper_limb" => ["MRI Brachial Plexus","MRI Cervical Spine","MRI Elbow","MRI Fingers","MRI Forearm","MRI Hand","MRI Radius & Ulnar","MRI Scaphoid","MRI Scapula","MRI Shoulder","MRI Thumb","MRI Upper Arm","MRI Wrist"]
     }
     
     expect(subject.send(:parse_group_csvs)).to eq(group_table)
@@ -33,15 +33,33 @@ end
 
 context "counting number of matches in each study" do
   let(:input_pathname) { "test_one" }
-  it "returns and array of count integers for each study group" do
-    count_result = { mri_axial_skeleton: 5, mri_lower_limb: 4, mri_upper_limb: 2 }
+  it "returns an array of count integers for each study group" do
+    count_result = { "mri_axial_skeleton" => 5, "mri_lower_limb" => 4, "mri_upper_limb" => 2 }
     expect(subject.study_group_match_count.length).to be(3)
     expect(subject.study_group_match_count).to eq(count_result)
-    p subject.input_group_match_combinations
+    # p subject.output
   end
 end
+
+context "recording which group(s) each MRI study could allocated to" do
+  describe ":study_group_table" do
+    let(:input_pathname) { "test_one" }
+    it "returns a hash with each studies possible groups" do
+      result = {
+        "MRI Cervical Spine" => { groups: ['mri_axial_skeleton', 'mri_upper_limb'], id: 1 },
+        "MRI Elbow" => { groups: ['mri_upper_limb'], id: 2 },
+        "MRI Lumbar Spine" => {groups: ['mri_axial_skeleton', 'mri_lower_limb'], id: 3 },
+        "MRI Pelvis" => { groups: ['mri_axial_skeleton', 'mri_lower_limb'], id: 4 },
+        "MRI Spine Sacrum" => {groups: ['mri_axial_skeleton', 'mri_lower_limb'], id: 5 },
+        "MRI Spine Coccyx" => { groups: ['mri_axial_skeleton', 'mri_lower_limb'], id: 6 }
+      }
+      expect(subject.study_groups).to eq(result)
+    end
+  end
   
-  context "finds correct groups of two two and two" do
+end
+  
+  context "finds correct groups of two, two and two" do
     let(:input_pathname) { "solved_example" }
 
     xit "creates the expected mapping of 3 groups of 2 studies" do
