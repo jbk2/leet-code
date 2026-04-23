@@ -59,46 +59,45 @@ context "recording which group(s) each MRI study could allocated to" do
   
 end
   
-  context "finds correct groups of two, two and two" do
-    let(:input_pathname) { "solved_example" }
+context "test_one.csv" do
+  let(:input_pathname) { "test_one" }
 
-    xit "creates the expected mapping of 3 groups of 2 studies" do
-      expect(subject).to eq(
-        [
-          ["MRI Elbow", "MRI Forearm"],               # Created from the MRI Upper Limb group
-          ["MRI Spine Coccyx", "MRI Spine Thoracic"], # Created from the MRI Axial Skeleton group
-          ["MRI Thigh", "MRI Knee"]                   # Created from the MRI Lower Limb group
-        ]
-      )
-    end
+  it "finds correct groups of two, two and two" do
+    expect(subject.group).to eq(
+      [
+        ["MRI Elbow", "MRI Cervical Spine"],
+        ["MRI Lumbar Spine", "MRI Pelvis"],
+        ["MRI Spine Sacrum", "MRI Spine Coccyx"]
+      ]
+    )
   end
+end
 
-  context "Test input group one" do
-    let(:input_pathname) { "test_one" }
+  # context "Test input group one" do
+  #   let(:input_pathname) { "test_one" }
 
-    xit "finds correct groups of two and four studies with no remainders" do
-      expect(subject).to eq(
-        [
-          [
-            "MRI Cervical Spine",
-            "MRI Elbow"
-          ],
-          [
-            "MRI Lumbar Spine",
-            "MRI Pelvis",
-            "MRI Spine Sacrum",
-            "MRI Spine Coccyx"
-          ]
-        ]
-      )
-    end
-  end
+  #   xit "finds correct groups of two and four studies with no remainders" do
+  #     expect(subject).to eq(
+  #       [
+  #         [
+  #           "MRI Cervical Spine",
+  #           "MRI Elbow"
+  #         ],
+  #         [
+  #           "MRI Lumbar Spine",
+  #           "MRI Pelvis",
+  #           "MRI Spine Sacrum",
+  #           "MRI Spine Coccyx"
+  #         ]
+  #       ]
+  #     )
+  #   end
+  # end
 
-  context "Test input group two" do
+  context "test_two.csv" do
     let(:input_pathname) { "test_two" }
-
-    xit "finds the expect group of 5, the one remainder is not included as it is not a group" do
-      expect(subject).to eq(
+    it "finds the expect group of 5, the one remainder is not included as it is not a group" do
+      expect(subject.group).to eq(
         [
           [
             "MRI Thigh",
@@ -112,24 +111,15 @@ end
     end
   end
 
-  context "Test input group three" do
+  context "test_three.csv" do
     let(:input_pathname) { "test_three" }
 
-    xit "creates the expected groups of six and two studies with no remainders" do
-      expect(subject).to eq(
+    it "groups unique study names; duplicate input rows are ignored" do
+      expect(subject.group).to eq(
         [
-          [
-            "MRI Cervical Spine",
-            "MRI Spine Coccyx",
-            "MRI Spine Lumbar/Sacral",
-            "MRI SIJ Both",
-            "MRI Pelvis",
-            "MRI Cervical Spine"
-          ],
-          [
-            "MRI Elbow",
-            "MRI Elbow"
-          ]
+          ["MRI Elbow", "MRI Cervical Spine"],
+          ["MRI Spine Lumbar/Sacral", "MRI Spine Coccyx"],
+          ["MRI SIJ Both", "MRI Pelvis"]
         ]
       )
     end

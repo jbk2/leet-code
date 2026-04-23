@@ -8,17 +8,65 @@ class MultipartGrouper
     @input_studies = parse_input_csv
     @group_paths = group_paths
     @groups_studies = parse_group_csvs
+    @study_groups = study_groups
   end
   
   attr_reader :groups_studies
   
-  # Implement this method
+  # correct output should be:
+  # [
+  #   ["MRI Elbow", "MRI Forearm"],               # Created from the MRI Upper Limb group
+  #   ["MRI Spine Coccyx", "MRI Spine Thoracic"], # Created from the MRI Axial Skeleton group
+  #   ["MRI Thigh", "MRI Knee"]                   # Created from the MRI Lower Limb group
+  # ]
+  
   def group
-    [
-      ["MRI Elbow", "MRI Forearm"],               # Created from the MRI Upper Limb group
-      ["MRI Spine Coccyx", "MRI Spine Thoracic"], # Created from the MRI Axial Skeleton group
-      ["MRI Thigh", "MRI Knee"]                   # Created from the MRI Lower Limb group
-    ]
+    remaining_study_groups = @study_groups.dup
+    final_grouped = Hash.new { |h, k| h[k] = [] }
+    ungroupable = Hash.new { |h, k| h[k] = [] }
+
+    # allocate single group matches
+    remaining_study_groups.delete_if do |study_name, data|
+      next false unless data[:groups].count == 1
+      
+      final_grouped[data[:groups].first] << study_name
+      true
+    end
+    
+    # allocate nil group matches
+    remaining_study_groups.delete_if do |study_name, data|
+      next false unless data[:groups].empty?
+        
+      ungroupable[study_name] = data
+      true
+    end
+
+    left_over_scan_count = Float::INFINITY
+    best_final_grouped = nil
+
+    search = lambda do |i|
+      # base case; i == the count of remaining studies with => 2 group options,
+      # i.e. we've visited every one
+      if i == remaining_study_groups.length
+        score = ungroupable.length + final_grouped.select { |group_name, studies| studies.length < 2 }.length
+        if score < left_over_scan_count
+          left_over_scan_count = score
+          best_final_grouped = final_grouped.transform_values(&:dup)
+        end
+        next
+      end
+
+      study_name = remaining_study_groups.keys[i]
+      # try each group option for the study i, dfs'ing down all studies
+      remaining_study_groups[study_name][:groups].each do |group_name|
+        final_grouped[group_name] << study_name
+        search.call(i + 1) # dfs recurse down i until base case
+        final_grouped[group_name].pop
+      end
+    end
+
+    search.call(0) 
+    best_final_grouped.values.delete_if { |group| group.length < 2 }
   end
 
   def output
