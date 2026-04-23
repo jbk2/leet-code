@@ -1,2 +1,7 @@
 node_modules/
 .byebug_history
+interview_qs/dealer/tmp/
+interview_qs/dealer/config/master.key
+interview_qs/dealer/log/development.log
+interview_qs/dealer/.kamal/secrets
+.ruby-lsp/
