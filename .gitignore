@@ -4,4 +4,5 @@ interview_qs/dealer/tmp/
 interview_qs/dealer/config/master.key
 interview_qs/dealer/log/development.log
 interview_qs/dealer/.kamal/secrets
+interview_qs/dealer/log
 .ruby-lsp/
