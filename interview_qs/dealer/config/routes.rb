@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   get "up" => "rails/health#show", as: :rails_health_check
   resources :requests, only: [:new, :create, :index, :show]
+  resources :users, only: [:new, :create, :edit]
   
   root "requests#index"
   

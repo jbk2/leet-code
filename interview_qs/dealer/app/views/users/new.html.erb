@@ -1,0 +1,9 @@
+
+<%= form_with model: @user, class: "form" do |user| %>
+  <h1>Users#new</h1>
+  <p class="form-subtitle">Subtitle here</p>
+  <p><%= user.email_field :email_address, placeholder: "Email address" %></p>
+  <p><%= user.password_field :password, size: 3, placeholder: "Password" %></p>
+  <p><%= user.password_field :password_confirmation, size: 3, placeholder: "Password confirmation" %></p>
+  <p><%= user.submit %></p>
+<% end %>
