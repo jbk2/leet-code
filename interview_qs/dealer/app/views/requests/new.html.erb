@@ -1,0 +1,9 @@
+<div>
+  <%= form_with url: requests_path, scope: :request, remote: true do |f| %>
+    <p>Make: <%= f.text_field :make %></p> 
+    <p>Model: <%= f.text_field :model %></p> 
+    <p>Year: <%= f.text_field :year %></p> 
+    <p>Mileage: <%= f.text_field :mileage %></p>
+    <%= f.submit %>
+  <% end %>
+</div>

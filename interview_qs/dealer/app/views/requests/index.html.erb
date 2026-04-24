@@ -1,0 +1,6 @@
+<% @requests.each do |request| %>
+  <div>
+    <%= render partial: "request", locals: { request: request } %>
+  </div>
+<% end %>
+
