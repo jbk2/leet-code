@@ -35,7 +35,17 @@ module Authentication
     end
 
     def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
+      session.delete(:return_to_after_authenticating) || signed_in_landing_page
+    end
+
+    def signed_in_landing_page
+      user = Current.session.user
+
+      if user.vendor?
+        user.requests.exists? ? requests_path : new_request_path
+      else
+        vendor_stock_path
+      end
     end
 
     def start_new_session_for(user)
