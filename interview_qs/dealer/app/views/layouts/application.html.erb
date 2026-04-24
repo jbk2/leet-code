@@ -29,9 +29,9 @@
         <h1 class="font-bold text-4xl">Welcome to 'Dealer'</h1>
       </div>
       <div class="absolute right-6">
-        <% if authenticated? %>
+        <% if authenticated? && !current_page?(new_session_path)%>
           <%= button_to "Sign Out", session_path, method: :delete, class: "link" %>
-        <% else %>
+        <% elsif !authenticated? && !current_page?(new_session_path) %>
           <%= link_to "Sign In", new_session_path, class: "link" %>
         <% end %>
       </div>
