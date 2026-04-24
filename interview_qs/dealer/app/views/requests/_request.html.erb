@@ -1,6 +1,10 @@
-<h1 class="font-bold text-4xl">Requests id no# <%= request.id %></h1>
-<p>Make: <%= request.make %></p>
-<p>Model: <%= request.model %></p>
-<p>Year: <%= request.year %></p>
-<p>Mileage: <%= request.mileage %></p>
-<p>State: <%= request.state %></p>
+<div class="border rounded-md p-4">
+  <h1 class="font-bold text-lg">Request id no# <%= request.id %></h1>
+  <ul>
+    <li class="text-sm"><span class="font-medium">Make: </span><%= request.make %></li>
+    <li class="text-sm"><span class="font-medium">Model: </span><%= request.model %></li>
+    <li class="text-sm"><span class="font-medium">Year: </span><%= request.year %></li>
+    <li class="text-sm"><span class="font-medium">Mileage: </span><%= request.mileage %></li>
+    <li class="text-sm"><span class="font-medium">State: </span><%= request.state %></li>
+  </ul>
+</div>

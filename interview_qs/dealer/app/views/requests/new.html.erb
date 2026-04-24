@@ -1,9 +1,17 @@
-<div>
-  <%= form_with url: requests_path, scope: :request, class: "form" do |f| %>
-    <p>Make: <%= f.text_field :make %></p> 
-    <p>Model: <%= f.text_field :model %></p> 
-    <p>Year: <%= f.text_field :year %></p> 
-    <p>Mileage: <%= f.text_field :mileage %></p>
-    <%= f.submit %>
+<div class="flex flex-col">
+  <% no_requests = Current.session.user.requests.empty? %>
+  <% if no_requests %>
+    <p>Create your first request here</p>
+  <% else %>
+    <%= link_to "requests", requests_path, { class: "link" } %>
   <% end %>
+  <div>
+    <%= form_with url: requests_path, scope: :request, class: "form" do |f| %>
+      <p>Make: <%= f.text_field :make %></p> 
+      <p>Model: <%= f.text_field :model %></p> 
+      <p>Year: <%= f.text_field :year %></p> 
+      <p>Mileage: <%= f.text_field :mileage %></p>
+      <%= f.submit %>
+    <% end %>
+  </div>
 </div>

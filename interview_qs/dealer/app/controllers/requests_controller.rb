@@ -13,7 +13,11 @@ class RequestsController < ApplicationController
   end
 
   def index
-    @requests = Current.user.requests
+    if Current.user.vendor?
+      @requests = Current.user.requests
+    else
+      @requests = Request.where(state: "open")
+    end
   end
 
   def show

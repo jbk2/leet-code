@@ -44,7 +44,7 @@ module Authentication
       if user.vendor?
         user.requests.exists? ? requests_path : new_request_path
       else
-        vendor_stock_path
+        requests_path
       end
     end
 

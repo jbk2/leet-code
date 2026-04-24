@@ -1,6 +1,12 @@
-<% @requests.each do |request| %>
-  <div>
-    <%= render partial: "request", locals: { request: request } %>
-  </div>
-<% end %>
+<div class="flex flex-col">
+  <%= link_to "new request", new_request_path, { class: "link my-2" } if Current.user.vendor? %>
 
+  <div class="flex gap-6">
+    <% @requests.each do |request| %>
+      <div>
+        <%= render partial: "request", locals: { request: request } %>
+      </div>
+    <% end %>
+  </div>
+
+</div>
