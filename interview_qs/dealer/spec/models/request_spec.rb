@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: requests
+#
+#  id         :bigint           not null, primary key
+#  make       :string
+#  mileage    :integer
+#  model      :string
+#  state      :integer          default("open"), not null
+#  year       :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_requests_on_state  (state)
+#
 require 'rails_helper'
 
 RSpec.describe Request, type: :model do

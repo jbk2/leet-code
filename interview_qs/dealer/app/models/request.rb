@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: requests
+#
+#  id         :bigint           not null, primary key
+#  make       :string
+#  mileage    :integer
+#  model      :string
+#  state      :integer          default("open"), not null
+#  year       :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_requests_on_state  (state)
+#
 class Request < ApplicationRecord
   enum :state, { open: 0, accepted: 1 }, deafult: :open
   validates_presence_of :make, :model, :year, :mileage, :state
