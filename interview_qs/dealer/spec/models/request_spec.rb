@@ -10,16 +10,32 @@
 #  year       :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  user_id    :bigint           not null
 #
 # Indexes
 #
-#  index_requests_on_state  (state)
+#  index_requests_on_state    (state)
+#  index_requests_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 require 'rails_helper'
 
 RSpec.describe Request, type: :model do
-  subject(:request) { described_class.new }
+  let(:user) { User.create!(email_address: "test@test.com", password: "password") }
   
+  subject(:request) do
+    described_class.new(
+      make: "vw",
+      model: "polo",
+      year: 1990,
+      mileage: 900,
+      user: user
+    )
+  end
+
   describe "validations" do
     # it "validates presence of make" do
     #   expect(subject).to validate_presence_of(:make)
@@ -30,6 +46,7 @@ RSpec.describe Request, type: :model do
     it { is_expected.to validate_length_of(:model).is_at_least(2).is_at_most(40) }
     it { is_expected.to validate_presence_of(:year) }
     it { is_expected.to validate_presence_of(:mileage) }
+    it { is_expected.to belong_to(:user).required }
     
     it "validates that state can be only open or accepted" do
       expect(subject).to define_enum_for(:state).with_values(open: 0, accepted: 1)

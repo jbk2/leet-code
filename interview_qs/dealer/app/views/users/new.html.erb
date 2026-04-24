@@ -5,5 +5,8 @@
   <p><%= user.email_field :email_address, placeholder: "Email address" %></p>
   <p><%= user.password_field :password, size: 3, placeholder: "Password" %></p>
   <p><%= user.password_field :password_confirmation, size: 3, placeholder: "Password confirmation" %></p>
+  <p class="mt-2 text-sm text-gray-600 flex gap-2">
+    Dealer account? <%= user.checkbox :account_type, { checked: false, class: "size-4"},  "dealer", "vendor" %>
+  </p>
   <p><%= user.submit %></p>
 <% end %>

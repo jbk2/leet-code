@@ -25,10 +25,10 @@ Customers can create a **car valuation request**.
 
 Each request should include:
 
-* `make` (e.g. BMW)
-* `model` (e.g. 3 Series)
-* `year`
-* `mileage`
+* `make` (e.g. BMW) (string, 2 - 30 chars, null false)
+* `model` (e.g. 3 Series) (string, 2 - 30 chars)
+* `year` (integer between 1900 - Time.now.year)
+* `mileage` (+ integer between 0 and 10000000)
 
 #### Rules
 

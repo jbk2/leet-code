@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id              :bigint           not null, primary key
+#  account_type    :integer          default("vendor"), not null
 #  email_address   :string           not null
 #  password_digest :string           not null
 #  created_at      :datetime         not null
@@ -10,6 +11,7 @@
 #
 # Indexes
 #
+#  index_users_on_account_type   (account_type)
 #  index_users_on_email_address  (email_address) UNIQUE
 #
 require 'rails_helper'
