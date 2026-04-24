@@ -2,7 +2,8 @@ node_modules/
 .byebug_history
 interview_qs/dealer/tmp/
 interview_qs/dealer/config/master.key
-interview_qs/dealer/log/development.log
+interview_qs/dealer/log/*.log
 interview_qs/dealer/.kamal/secrets
-interview_qs/dealer/log
+interview_qs/dealer/node_modules/
+interview_qs/dealer/.DS_Store
 .ruby-lsp/
