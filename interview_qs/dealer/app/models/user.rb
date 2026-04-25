@@ -20,6 +20,8 @@ class User < ApplicationRecord
   has_many :requests
   has_one :dealer_profile, dependent: :destroy
   enum :account_type, { vendor: 0, dealer: 1 }, default: :vendor
+  delegate :dealer_name, :dealer_rating, to: :dealer_profile, allow_nil: true
+  accepts_nested_attributes_for :dealer_profile
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   validates_length_of :password, minimum: 3
@@ -31,5 +33,4 @@ class User < ApplicationRecord
       errors.add(:dealer_profile, ":dealer_name & :dealer_rating must not be present for vendor accounts")
     end
   end
-
 end

@@ -1,12 +1,22 @@
 
-<%= form_with model: @user, class: "form" do |user| %>
+<%= form_with model: @user, class: "form", data: { controller: "new-user-form" } do |f| %>
   <h1>Users#new</h1>
   <p class="form-subtitle">Subtitle here</p>
-  <p><%= user.email_field :email_address, placeholder: "Email address" %></p>
-  <p><%= user.password_field :password, size: 3, placeholder: "Password" %></p>
-  <p><%= user.password_field :password_confirmation, size: 3, placeholder: "Password confirmation" %></p>
   <p class="mt-2 text-sm text-gray-600 flex gap-2">
-    Dealer account? <%= user.checkbox :account_type, { checked: false, class: "size-4"},  "dealer", "vendor" %>
+    Dealer account?
+    <%= f.checkbox :account_type,
+      { checked: false, class: "size-4", data: { action: "change->new-user-form#toggleDealerNameField"} },
+      "dealer",
+      "vendor"
+    %>
   </p>
-  <p><%= user.submit %></p>
+  <p><%= f.email_field :email_address, placeholder: "Email address" %></p>
+  <p><%= f.password_field :password, size: 3, placeholder: "Password" %></p>
+  <p><%= f.password_field :password_confirmation, size: 3, placeholder: "Password confirmation" %></p>
+  <p hidden data-new-user-form-target="dealerNameField">
+    <%= f.fields_for :dealer_profile do |dp| %>
+      <%= dp.text_field :dealer_name, size: 3, placeholder: "Dealer name here" %>
+    <% end %>
+  </p>
+  <p><%= f.submit %></p>
 <% end %>

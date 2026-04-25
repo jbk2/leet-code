@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    @user.build_dealer_profile
   end
 
   def create
@@ -10,7 +11,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to new_session_path
     else
-      render :new, status: :unproceesable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -21,6 +22,7 @@ class UsersController < ApplicationController
   private
   def user_params
     params.expect(user: [:email_address, :password, :password_confirmation, :account_type,
-      :dealer_name, :dealer_rating ])
+      dealer_profile_attributes: [ :dealer_name, :dealer_rating ]
+    ])
   end
 end

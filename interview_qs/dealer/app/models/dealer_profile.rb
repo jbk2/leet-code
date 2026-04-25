@@ -4,7 +4,7 @@
 #
 #  id            :bigint           not null, primary key
 #  dealer_name   :string
-#  dealer_rating :decimal(3, 1)
+#  dealer_rating :decimal(3, 1)    default(5.0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  user_id       :bigint           not null
