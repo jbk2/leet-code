@@ -3,7 +3,12 @@ require 'rails_helper'
 RSpec.describe "Sessions", type: :request do
   let(:vendor_user) { User.create!( email_address: "vendor@test.com", password: "password", account_type: "vendor") }
   let(:vendor2_user) { User.create!( email_address: "vendor2@test.com", password: "password", account_type: "vendor") }
-  let(:dealer_user) { User.create!( email_address: "dealer@test.com", password: "password", account_type: "dealer") }
+  let(:dealer_user) do
+    dealer = User.new(email_address: "dealer@test.com", password: "password", account_type: "dealer")
+    dealer.build_dealer_profile(dealer_name: "dealer1", dealer_rating: 3.5)
+    dealer.save!
+    dealer
+  end
   let(:password) { "password" }
 
   def sign_in(user:, password:)

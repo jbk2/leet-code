@@ -4,7 +4,9 @@
   <div class="flex gap-6">
     <% @requests.each do |request| %>
       <div>
-        <%= render partial: "request", locals: { request: request } %>
+        <%= link_to request_path(request), class: "block" do  %>
+          <%= render partial: "request", locals: { request: request } %>
+        <% end%>
       </div>
     <% end %>
   </div>
