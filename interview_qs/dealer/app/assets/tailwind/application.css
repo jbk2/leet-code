@@ -1,57 +1,71 @@
 @import "tailwindcss";
 
-.link {
-  @apply text-blue-600 underline underline-offset-4 hover:text-blue-500 hover:no-underline;
+@layer components {
+  /* ################# GENERAL ################## */
+  .link {
+    @apply text-blue-600 underline underline-offset-4 hover:text-blue-500 hover:no-underline;
+  }
+  
+  .button {
+    @apply rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm
+           hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30;
+  }
+
+  /* ################# FLASH ################## */
+  .flash {
+    @apply rounded-lg border px-4 py-3 text-sm font-medium shadow-sm;
+  }
+  .flash-notice {
+    @apply border-emerald-200 bg-emerald-50 text-emerald-900;
+  }
+  .flash-alert {
+    @apply border-rose-200 bg-rose-50 text-rose-900;
+  }
+  
+  /* ################# FORM STYLING ################## */
+  .form {
+    @apply px-4 py-10;
+  }
+  /* Optional “card” wrapper inside */
+  .form-card {
+    @apply rounded-2xl border border-gray-400 bg-white p-6;
+  }
+  .form h1 {
+    @apply text-2xl font-semibold text-gray-900;
+  }
+  .form p.form-subtitle {
+    @apply mt-1 text-sm text-gray-600;
+  }
+  .form label {
+    @apply block text-sm font-medium text-gray-900;
+  }
+  /* Inputs */
+  .form input[type="email"],
+  .form input[type="password"],
+  .form input[type="text"],
+  .form input[type="number"],
+  .form input[type="search"],
+  .form select,
+  .form textarea {
+    @apply mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm
+      focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
+  }
+  /* Spacing between “field blocks” */
+  /* .form .field {
+    @apply mt-5;
+  }
+  .form .field:first-child {
+    @apply mt-0;
+  } */
+  /* Submit button */
+  .form input[type="submit"],
+  .form button[type="submit"] {
+    @apply mt-6 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm
+           hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30;
+  }
+  /* Links inside form */
+  .form a {
+    @apply font-medium text-sm text-blue-500 underline underline-offset-4 hover:text-blue-500 hover:no-underline;
+  }
 }
 
-.button {
-  @apply rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm
-         hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30;
-}
-
-/* ################# FORM STYLING ################## */
-
-.form {
-  @apply px-4 py-10;
-}
-/* Optional “card” wrapper inside */
-.form-card {
-  @apply rounded-2xl border border-gray-400 bg-white p-6;
-}
-.form h1 {
-  @apply text-2xl font-semibold text-gray-900;
-}
-.form p.form-subtitle {
-  @apply mt-1 text-sm text-gray-600;
-}
-.form label {
-  @apply block text-sm font-medium text-gray-900;
-}
-/* Inputs */
-.form input[type="email"],
-.form input[type="password"],
-.form input[type="text"],
-.form input[type="number"],
-.form input[type="search"],
-.form select,
-.form textarea {
-  @apply mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm
-    focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
-}
-/* Spacing between “field blocks” */
-/* .form .field {
-  @apply mt-5;
-}
-.form .field:first-child {
-  @apply mt-0;
-} */
-/* Submit button */
-.form input[type="submit"],
-.form button[type="submit"] {
-  @apply mt-6 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm
-         hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30;
-}
-/* Links inside form */
-.form a {
-  @apply font-medium text-sm text-blue-500 underline underline-offset-4 hover:text-blue-500 hover:no-underline;
-}
