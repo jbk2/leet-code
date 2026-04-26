@@ -20,20 +20,17 @@
 require 'rails_helper'
 
 RSpec.describe DealerProfile, type: :model do
-  let(:dealer_profile) do
-    user = User.new(email_address: "test@test.com", password: "password", account_type: "dealer")
-    user.build_dealer_profile(dealer_name: "dealer name", dealer_rating: 3.5)
-    user.save!
-    user.dealer_profile
-  end
+  let(:dealer_profile) { dealer_profiles(:dealer_profile_one) }
+  let(:request_one) { requests(:user_one_request_one) }
+  let(:request_two) { requests(:user_one_request_two) }
   
-  context "assocaitions" do
+  describe "associations" do
     it "must belong_to a user" do
       subject { is_expected.to belong_to(:user).required }
     end
   end
 
-  context "dealer_name validations" do
+  describe "dealer_name validations" do
     it "a dealer name with less than 3 chars is invalid" do
       dealer_profile.update_attribute("dealer_name", "ab")
       expect(dealer_profile).not_to be_valid
@@ -49,12 +46,9 @@ RSpec.describe DealerProfile, type: :model do
     end
   end
   
-  context "dealer_rating validations" do
+  describe "dealer_rating validations" do
     it "must set a default dealer_rating value of 5" do
-      dealer_user_default_rating = User.new(email_address: "test@test.com", password: "password", account_type: "dealer")
-      dealer_user_default_rating.build_dealer_profile(dealer_name: "dealer name")
-      dealer_user_default_rating.save!
-      expect(dealer_user_default_rating.dealer_profile.dealer_rating).to eq(5.0)
+      expect(dealer_profile.dealer_rating).to eq(5.0)
     end
     
     it "a dealer_rating of more than >10 is invalid" do
@@ -79,5 +73,18 @@ RSpec.describe DealerProfile, type: :model do
     end
   end
 
+  describe "dealer offers" do
+    it "can create multiple offers for multiple requests" do
+      expect {
+        dealer_profile.offers.create(price: 1000, request_id: request_two.id)
+      }.to change { dealer_profile.offers.count }.by(1)
+    end 
+    
+    it "validates at model level that request_id scoped to dealer_profile_id is unique" do
+      dup_offer = Offer.new(price: 1000, request_id: request_one.id,
+        dealer_profile_id: dealer_profile.id )
+      expect(dup_offer).to be_invalid
+    end
+  end
 
 end

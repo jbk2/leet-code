@@ -23,4 +23,6 @@
 class Offer < ApplicationRecord
   belongs_to :dealer_profile
   belongs_to :request
+
+  validates :request_id, uniqueness: { scope: :dealer_profile_id }
 end

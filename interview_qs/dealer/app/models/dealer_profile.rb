@@ -19,6 +19,7 @@
 #
 class DealerProfile < ApplicationRecord
   belongs_to :user
+  has_many :offers
 
   validates_length_of :dealer_name, minimum: 3, maximum: 40
   validates_numericality_of :dealer_rating, less_than_or_equal_to: 10, message: "must be less than or equal to 10"

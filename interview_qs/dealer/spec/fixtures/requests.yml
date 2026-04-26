@@ -28,3 +28,11 @@ user_one_request_one:
   year: 1990
   mileage: 900
   state: open
+
+user_one_request_two:
+  user: vendor_user_one
+  make: vw
+  model: beetle
+  year: 1990
+  mileage: 900
+  state: open

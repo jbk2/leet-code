@@ -19,6 +19,9 @@
 #
 dealer_profile_one:
   dealer_name: dealer1
-  dealer_rating: 5
   user: dealer_user_one
+
+dealer_profile_two:
+  dealer_name: dealer2
+  user: dealer_user_two
 
