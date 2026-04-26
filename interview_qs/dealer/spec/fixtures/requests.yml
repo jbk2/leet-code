@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: requests
+#
+#  id         :bigint           not null, primary key
+#  make       :string
+#  mileage    :integer
+#  model      :string
+#  state      :integer          default("open"), not null
+#  year       :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :bigint           not null
+#
+# Indexes
+#
+#  index_requests_on_state    (state)
+#  index_requests_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
+user_one_request_one:
+  user: vendor_user_one
+  make: vw
+  model: polo
+  year: 1990
+  mileage: 900
+  state: open

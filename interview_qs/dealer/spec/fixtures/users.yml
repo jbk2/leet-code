@@ -18,10 +18,11 @@
 #  index_users_on_account_type   (account_type)
 #  index_users_on_email_address  (email_address) UNIQUE
 #
-one:
-  email_address: one@example.com
+vendor_user_one:
+  email_address: vendor_user_one@example.com
   password_digest: <%= password_digest %>
 
-two:
-  email_address: two@example.com
+dealer_user_one:
+  email_address: dealer_user_one@example.com
   password_digest: <%= password_digest %>
+  account_type: dealer

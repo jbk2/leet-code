@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_25_151039) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_26_103305) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_151039) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_dealer_profiles_on_user_id"
+  end
+
+  create_table "offers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "dealer_profile_id", null: false
+    t.integer "price", null: false
+    t.bigint "request_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dealer_profile_id", "request_id"], name: "index_offers_on_dealer_profile_id_and_request_id", unique: true
+    t.index ["dealer_profile_id"], name: "index_offers_on_dealer_profile_id"
+    t.index ["request_id"], name: "index_offers_on_request_id"
   end
 
   create_table "requests", force: :cascade do |t|
@@ -56,6 +67,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_151039) do
   end
 
   add_foreign_key "dealer_profiles", "users"
+  add_foreign_key "offers", "dealer_profiles"
+  add_foreign_key "offers", "requests"
   add_foreign_key "requests", "users"
   add_foreign_key "sessions", "users"
 end

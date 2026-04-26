@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: dealer_profiles
+#
+#  id            :bigint           not null, primary key
+#  dealer_name   :string
+#  dealer_rating :decimal(3, 1)    default(5.0), not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :bigint           not null
+#
+# Indexes
+#
+#  index_dealer_profiles_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
+dealer_profile_one:
+  dealer_name: dealer1
+  dealer_rating: 5
+  user: dealer_user_one
+

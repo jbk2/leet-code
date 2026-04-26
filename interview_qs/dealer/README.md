@@ -1,6 +1,11 @@
 # README
 
 ### TODOS
+- update all tests to user the created fixtures
+- create offer functionality:
+
+
+
 - *enable dealer offers*
   - show offer buttons in requests index view only for dealers
   - create an offer model;
