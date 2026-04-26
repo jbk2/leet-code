@@ -10,10 +10,8 @@
     <%= csp_meta_tag %>
 
     <%= yield :head %>
-
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
@@ -25,10 +23,15 @@
 
   <body>
     <header class="flex py-10">
-      <div class="mx-auto">
-        <h1 class="font-bold text-4xl">Welcome to 'Dealer'</h1>
+      <div id="flash">
+        <% flash.each do |type, message| %>
+          <p class="flash <%= type %>"><%= message %></p>
+        <% end %>
       </div>
-      <div class="absolute right-6">
+      <%= link_to requests_path, class: "mx-auto" do  %>
+        <h1 class="font-bold text-4xl">Welcome to 'Dealer'</h1>
+      <% end %>
+      <div class="absolute right-6" if="auth-btns">
         <% if authenticated? && !current_page?(new_session_path)%>
           <%= button_to "Sign Out", session_path, method: :delete, class: "link" %>
         <% elsif !authenticated? && !current_page?(new_session_path) %>
