@@ -2,24 +2,38 @@
 
 ### TODOS
 - update all tests to user the created fixtures
-- create offer functionality:
 
+- *Request expiry*
+  - requests expire after 7 days - state moves from 'open' to 'closed'
+  - offers only allowed on a open request
 
+- *Offer functionality:*
+  - _Offer state_
+    - offers must have state: active, accepted, declined
+      - for dealers
+        - filter offers index by state
+      - for vendors - do they even have an offers index page? maybe just a requests index page   and top 5 offers listed in requests show?
 
-- *enable dealer offers*
-  - show offer buttons in requests index view only for dealers
-  - create an offer model;
-    - dealers have_many offers
-    - dealers can only create one offer per request (but they can update that offer)
-    - requests have_many offers
+  - _offer functionality within requests index page_
+    - for dealers only
+      - shows offer buttons only for dealers
+      - shows max offer price and time
+    - for vendors
+      - shows highest 5 offers
+      - shows accept offer button on each offer > routes to an offer show page
+  
+  - _offer show page:_
+    - for dealers:
+      - shows offer status accepted / declined / active
+      - shows a withdraw off button
+    - for vendors
+      - shows an accept offer button
+      - shows a decline offer button
 
-_Offer_
-* `price`
-* `dealer_id`
-* `request_id`
-
-belongs_to :dealer_profile
-belongs_to :request
-
-request: has_many :offers
-dealer_profile has_many :offers
+  - _on offer acceptance:_
+    - all other offers from other dealers on the request are rejected
+    - alert dealer that maade offer of their success
+  
+  - _on offer decline:_
+    - alert dealer that made offer of their failure
+    - change state of offer to declined - not longer shown in offers index 
