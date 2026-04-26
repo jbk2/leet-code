@@ -1,0 +1,5 @@
+<div class="flex gap-4">
+  <% @offers.each do |offer| %>
+    <%= render partial: 'offer', locals: { offer: offer } %>
+  <% end %>
+</div>

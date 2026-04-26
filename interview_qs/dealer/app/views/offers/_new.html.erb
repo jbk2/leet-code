@@ -1,0 +1,10 @@
+<div class="mt-3 mb-1 text-sm">
+  <%= form_with scope: :offer, url: offers_path do |f| %>
+    <%= f.hidden_field :request_id, value: request_id %>
+    <%= f.hidden_field :dealer_profile_id, value: dealer_profile_id %>
+    <%= f.number_field :price, placeholder: "your price",
+      min: 100, max: 10000000, step: 100,
+      class: "border border-gray-400 rounded-lg p-2.5" %>
+    <%= f.submit "Make offer", class: "button" %>
+  <% end %>
+</div>

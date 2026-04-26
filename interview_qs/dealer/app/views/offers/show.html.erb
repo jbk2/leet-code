@@ -1,0 +1,16 @@
+<div class="text-sm">
+  <ul class="border">
+  <h1 class="text-lg font-bold">Request</h1>
+    <li><span class="font-medium">Make: </span><%= @offer.request.make %></mi>
+    <li><span class="font-medium">Model: </span><%= @offer.request.model %></mi>
+    <li><span class="font-medium">Year: </span><%= @offer.request.year %></mi>
+    <li><span class="font-medium">Mileage: </span><%= @offer.request.mileage %></mi>
+    <li><span class="font-medium">State: </span><%= @offer.request.state %></li>
+  </ul>
+  <ul class="border">
+    <h1 class="text-lg font-bold">Offer</h1>
+    <li><span class="font-medium">Price: </span><%= @offer.price %></li>
+    <li><span class="font-medium">Dealer Name: </span><%= @offer.dealer_profile.dealer_name %></li>
+    <li><span class="font-medium">Offer date: </span><%= @offer.created_at.strftime('%d-%m-%Y, %H:%Mhrs') %></li>
+  </ul>
+</div>

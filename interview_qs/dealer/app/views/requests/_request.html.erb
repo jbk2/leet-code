@@ -1,10 +1,21 @@
-<div class="border rounded-md p-4">
-  <h1 class="font-bold text-lg">Request id no# <%= request.id %></h1>
-  <ul>
-    <li class="text-sm"><span class="font-medium">Make: </span><%= request.make %></li>
-    <li class="text-sm"><span class="font-medium">Model: </span><%= request.model %></li>
-    <li class="text-sm"><span class="font-medium">Year: </span><%= request.year %></li>
-    <li class="text-sm"><span class="font-medium">Mileage: </span><%= request.mileage %></li>
-    <li class="text-sm"><span class="font-medium">State: </span><%= request.state %></li>
-  </ul>
-</div>
+  <div class="border rounded-md p-4">
+    <%= link_to request_path(request) do  %>
+      <h1 class="font-bold text-lg">Request id no# <%= request.id %></h1>
+      <ul class="text-sm">
+        <li"><span class="font-medium">Make: </span><%= request.make %></li>
+        <li"><span class="font-medium">Model: </span><%= request.model %></li>
+        <li"><span class="font-medium">Year: </span><%= request.year %></li>
+        <li"><span class="font-medium">Mileage: </span><%= request.mileage %></li>
+        <li"><span class="font-medium">State: </span><%= request.state %></li>
+      </ul>
+    <% end %>
+    <% if Current.user.account_type == 'dealer' %>
+      <% request_id = request.id %>
+      <% dealer_profile_id = Current.user.dealer_profile.id %>
+      <%= render partial: "offers/new",
+        locals: {
+          request_id: request.id,
+          dealer_profile_id: dealer_profile_id
+        } %>
+    <% end %>
+  </div>
