@@ -24,17 +24,9 @@
 require 'rails_helper'
 
 RSpec.describe Request, type: :model do
-  let(:user) { User.create!(email_address: "test@test.com", password: "password") }
-  
-  subject(:request) do
-    described_class.new(
-      make: "vw",
-      model: "polo",
-      year: 1990,
-      mileage: 900,
-      user: user
-    )
-  end
+  let(:vendor_user_one) { users(:vendor_user_one)}
+  let(:vendor_user_request_one) { requests(:user_one_request_one)}
+  let(:dealer_user_one_offer_one) { offers(:dealer_user_one_offer_one)}
 
   describe "validations" do
     # it "validates presence of make" do
@@ -57,6 +49,12 @@ RSpec.describe Request, type: :model do
     end
     it "validates mileage to be between 0 and 1,000,000" do
       expect(subject).to validate_numericality_of(:mileage).is_in(0..1000000)
+    end
+  end
+
+  describe "associations" do
+    it "has offers" do
+      is_expected.to have_many(:offers)
     end
   end
 end

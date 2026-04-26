@@ -30,4 +30,5 @@ class Request < ApplicationRecord
   validates_numericality_of :mileage, in: 0..1000000
   validates_inclusion_of :state, in: ['open', 'accepted']
   belongs_to :user
+  has_many :offers
 end
