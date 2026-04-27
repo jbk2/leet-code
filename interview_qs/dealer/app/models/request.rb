@@ -22,7 +22,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Request < ApplicationRecord
-  enum :state, { open: 0, accepted: 1 }, deafult: :open
+  enum :state, { open: 0, offer_accepted: 1, expired: 2 }, deafult: :open
   validates_presence_of :make, :model, :year, :mileage, :state
   validates_length_of :make, in: 2..30
   validates_length_of :model, in: 2..40

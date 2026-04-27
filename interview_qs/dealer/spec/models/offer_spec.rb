@@ -4,6 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  price             :integer          not null
+#  state             :integer          default(0), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  dealer_profile_id :bigint           not null
@@ -14,6 +15,7 @@
 #  index_offers_on_dealer_profile_id                 (dealer_profile_id)
 #  index_offers_on_dealer_profile_id_and_request_id  (dealer_profile_id,request_id) UNIQUE
 #  index_offers_on_request_id                        (request_id)
+#  index_offers_on_state                             (state)
 #
 # Foreign Keys
 #
@@ -37,6 +39,11 @@ RSpec.describe Offer, type: :model do
           dealer_profile_id: dealer.id,
           request_id: request.id
         )
+      end
+
+      it "validates that state can be only :open, :accepted, :rejected or :withdrawn" do
+        expect(subject).to define_enum_for(:state).with_values(open: 0,
+          accepted: 1, rejected: 2, withdrawn: 3)
       end
     end
 

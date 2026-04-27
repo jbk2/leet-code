@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_26_103305) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_27_181159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,10 +28,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_103305) do
     t.bigint "dealer_profile_id", null: false
     t.integer "price", null: false
     t.bigint "request_id", null: false
+    t.integer "state", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["dealer_profile_id", "request_id"], name: "index_offers_on_dealer_profile_id_and_request_id", unique: true
     t.index ["dealer_profile_id"], name: "index_offers_on_dealer_profile_id"
     t.index ["request_id"], name: "index_offers_on_request_id"
+    t.index ["state"], name: "index_offers_on_state"
   end
 
   create_table "requests", force: :cascade do |t|

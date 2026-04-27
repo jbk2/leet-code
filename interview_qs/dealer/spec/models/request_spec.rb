@@ -28,6 +28,19 @@ RSpec.describe Request, type: :model do
   let(:vendor_user_request_one) { requests(:user_one_request_one)}
   let(:dealer_user_one_offer_one) { offers(:dealer_user_one_offer_one)}
 
+  
+  describe "attributes" do
+    it "defaults to a state of :open" do
+      vendor_user_one.requests.create(
+        make: 'vw',
+        model: 'dragster',
+        year: 1990,
+        mileage: 900
+      )
+      
+      expect(vendor_user_one.requests.last.state).to eq("open")
+    end
+  end
   describe "validations" do
     # it "validates presence of make" do
     #   expect(subject).to validate_presence_of(:make)
@@ -40,8 +53,9 @@ RSpec.describe Request, type: :model do
     it { is_expected.to validate_presence_of(:mileage) }
     it { is_expected.to belong_to(:user).required }
     
-    it "validates that state can be only open or accepted" do
-      expect(subject).to define_enum_for(:state).with_values(open: 0, accepted: 1)
+    it "validates that state can be :open, :offer_accepted or :expired" do
+      expect(subject).to define_enum_for(:state).with_values(open: 0,
+        offer_accepted: 1, expired: 2)
     end
 
     it "validates year to be between 1900 and current year" do
