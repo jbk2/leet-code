@@ -15,16 +15,30 @@ class OffersController < ApplicationController
   def index
     dealer_profile = Current.user.dealer_profile
 
-    if dealer_profile
-      @offers = dealer_profile.offers
-    else
-      redirect_to requests_path,
-        notice: "you're a vendor not a dealer, acct_type: #{Current.user.account_type}"
+    unless dealer_profile
+      return redirect_to requests_path,
+      notice: "you're a vendor not a dealer, acct_type: #{Current.user.account_type}"
     end
+
+    @offers = dealer_profile.offers
   end
 
   def show
     @offer = Offer.find(params[:id])
+  end
+
+  def destroy
+    dealer_profile = Current.user.dealer_profile
+    raise ActiveRecord::RecordNotFound unless dealer_profile
+
+    offer = Offer.find(params[:id])
+    offer.destroy!
+
+    if dealer_profile.offers.any?
+      redirect_to offers_path, notice: "Offer successfully cancelled"
+    else
+      redirect_to requests_path, notice: "Offer successfully cancelled"
+    end
   end
 
   private

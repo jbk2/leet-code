@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :requests, only: [:new, :create, :index, :show]
-  resources :users, only: [:new, :create, :edit]
-  resources :offers, only: [:create, :show, :index]
+  resources :users, only: [:new, :create, :edit, :show]
+  resources :offers, only: [:create, :show, :index, :destroy]
+  resources :dealer_profiles, only: [:show]
   
   root "requests#index"
   

@@ -1,16 +1,48 @@
-<div class="text-sm">
-  <ul class="border">
-  <h1 class="text-lg font-bold">Request</h1>
-    <li><span class="font-medium">Make: </span><%= @offer.request.make %></mi>
-    <li><span class="font-medium">Model: </span><%= @offer.request.model %></mi>
-    <li><span class="font-medium">Year: </span><%= @offer.request.year %></mi>
-    <li><span class="font-medium">Mileage: </span><%= @offer.request.mileage %></mi>
-    <li><span class="font-medium">State: </span><%= @offer.request.state %></li>
-  </ul>
-  <ul class="border">
-    <h1 class="text-lg font-bold">Offer</h1>
-    <li><span class="font-medium">Price: </span><%= @offer.price %></li>
-    <li><span class="font-medium">Dealer Name: </span><%= @offer.dealer_profile.dealer_name %></li>
-    <li><span class="font-medium">Offer date: </span><%= @offer.created_at.strftime('%d-%m-%Y, %H:%Mhrs') %></li>
-  </ul>
+<div class="flex flex-col">
+  <h1 class="text-2xl font-bold mb-4">Showing Offer id#; <%= @offer.id %></h1>
+  <% user = Current.user %>
+  <div class="text-sm">
+    <h1 class="text-lg font-bold">Request</h1>
+    <ul class="border">
+      <li><span class="font-medium">Make: </span><%= @offer.request.make %></mi>
+      <li><span class="font-medium">Model: </span><%= @offer.request.model %></mi>
+      <li><span class="font-medium">Year: </span><%= @offer.request.year %></mi>
+      <li><span class="font-medium">Mileage: </span><%= @offer.request.mileage %></mi>
+      <li><span class="font-medium">State: </span><%= @offer.request.state %></li>
+      <% if user.dealer? %>
+      <li>
+        <span>Vendor profile:</span>
+        <%= link_to @offer.request.user.email_address,
+          user_path(@offer.request.user),
+          class: "link"
+        %>
+      </li>
+      <% end %>
+    </ul>
+    <% if user.dealer? %>
+      <h1 class="text-lg font-bold">My Offer</h1>
+      <ul class="border">
+        <li><span class="font-medium">Price: </span><%= @offer.price %></li>
+        <li><span class="font-medium">Offer date: </span><%= @offer.created_at.strftime('%d-%m-%Y, %H:%Mhrs') %></li>
+        <li><%= button_to "Cancel offer",
+          @offer,
+          method: :delete,
+          data: { turbo_confirm: "Cancel, are you sure?"},
+          class: "button block mx-auto" %></li>
+      </ul>
+    <% else %>
+      <ul class="border">
+        <h1 class="text-lg font-bold">Offer</h1>
+        <li><span class="font-medium">Price: </span><%= @offer.price %></li>
+        <li>
+          <span>Dealer name:</span>
+          <%= link_to @offer.dealer_profile.dealer_name,
+            dealer_profile_path(@offer.dealer_profile),
+            class: "link"
+          %>
+        </li>
+        <li><span class="font-medium">Offer date: </span><%= @offer.created_at.strftime('%d-%m-%Y, %H:%Mhrs') %></li>
+      </ul>
+    <% end %>
+  </div>
 </div>

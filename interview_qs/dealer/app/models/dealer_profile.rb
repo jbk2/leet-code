@@ -18,7 +18,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class DealerProfile < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, dependent: :destroy
   has_many :offers
 
   validates_length_of :dealer_name, minimum: 3, maximum: 40

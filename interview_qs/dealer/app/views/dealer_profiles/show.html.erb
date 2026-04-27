@@ -1,0 +1,11 @@
+<div class="flex flex-col">
+  <h1 class="text-xl font-bold">Heres my dealer</h1>
+  <div class="border rounded p-2">
+    <ul class="">
+      <li>Dealer name: <%= @dealer_profile.dealer_name %></li>
+      <li>Dealer rating: <%= @dealer_profile.dealer_rating %></li>
+      <li>Dealer email address: <%= @dealer_profile.user.email_address %></li>
+      <li>No of dealer active bids; <%= @dealer_profile.offers.count %></li>
+    </ul>
+  </div>
+</div>
