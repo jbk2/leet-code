@@ -2,14 +2,20 @@
 
 ### TODOS
 - update all tests to user the created fixtures
+- timeout flash display
 
 - *Request expiry*
-  - requests expire after 7 days - state moves from 'open' to 'closed'
+  - requests expire after 7 days - state moves from 'open' to 'expired'
   - offers only allowed on a open request
+    - when request expires:
+      - state chage from 'open' to 'expired'
+      - any active offers on that request need state changed to 'rejected - expired'
+      - scope/filter dealer & vendors requests_path :index views to open requests only
+      - provide vendors with a tab in requests_index for expired requests
 
 - *Offer functionality:*
   - _Offer state_
-    - offers must have state: active, accepted, declined
+    - offers must have state: [open, accepted, rejected, withdrawn]
       - for dealers
         - filter offers index by state
       - for vendors - do they even have an offers index page? maybe just a requests index page   and top 5 offers listed in requests show?
